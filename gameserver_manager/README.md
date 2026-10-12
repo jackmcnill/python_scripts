@@ -63,12 +63,39 @@ aktive Administrator kann nicht gelöscht oder gesperrt werden. Alle Änderungen
 
 Daten (Server, Backups, Einstellungen) liegen in `~/gameserver-manager`, änderbar mit `GSM_DATA`.
 
-### Aus dem Netzwerk erreichbar machen
+### Auf einem Server installieren und von außen erreichbar machen
 
-Standardmäßig lauscht die Oberfläche nur auf `127.0.0.1`. Die Oberfläche kann Container starten und
-Befehle an Server senden, schütze sie deshalb: am besten per Reverse-Proxy mit HTTPS (nginx, Caddy) oder
-SSH-Tunnel/VPN. `--host 0.0.0.0` schaltet den direkten Zugriff (unverschlüsselt) frei.
-Die Minecraft-Ports der Server (Standard 25565, je Server eigener Port) müssen in der Firewall offen sein.
+Auf einem Debian/Ubuntu-Server (Python 3.12+, z. B. Ubuntu 24.04):
+
+```bash
+git clone -b minecraft-servermanager https://github.com/jackmcnill/python_scripts.git
+cd python_scripts/gameserver_manager
+sudo ./deploy/install.sh --domain manager.deine-domain.de
+```
+
+Das Skript installiert Docker und die Python-Umgebung, legt den Administrator an (das Passwort wird einmalig
+angezeigt), richtet den Systemdienst `gsm` ein und setzt **Caddy** als HTTPS-Proxy davor. Das Zertifikat holt
+Caddy automatisch. Mit `--dry-run` zeigt das Skript nur, was es tun würde.
+
+Voraussetzungen für den Zugriff von außen:
+
+1. Ein DNS-Eintrag (A/AAAA) der Domain zeigt auf den Server (bei wechselnder IP z. B. per DynDNS).
+2. Die Ports **80 und 443** sind in Firewall und Router erreichbar (nur für den Manager).
+3. Die Minecraft-Ports der Server (Standard 25565, je Server eigener Port) sind separat freigegeben.
+
+Der Manager selbst lauscht dabei nur auf `127.0.0.1`; von außen ist er nur über HTTPS erreichbar. Er erkennt
+den Proxy (`X-Forwarded-*`): Cookies werden `Secure`, im Protokoll steht die echte Client-IP. Ein anderer
+Proxy als lokal wird mit `--trusted-proxies` freigegeben.
+
+Ohne eigene Domain oder ohne offene Ports: Tailscale/WireGuard (VPN) oder ein Cloudflare Tunnel; dann den
+Manager mit `sudo ./deploy/install.sh` (ohne `--domain`) installieren und den Port nicht ins Internet freigeben.
+
+Nutzt du nginx statt Caddy, brauchst du für die Konsole WebSocket-Header:
+`proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection "upgrade";`
+sowie `proxy_set_header Host $host; proxy_set_header X-Forwarded-Proto $scheme; proxy_set_header X-Forwarded-For $remote_addr;`
+und für Uploads ein hohes `client_max_body_size` (Modpacks, Mods).
+
+Update: `git pull && sudo systemctl restart gsm`. Daten liegen in `~/gameserver-manager`.
 
 ## Einstellungen (`settings.json` im Datenordner)
 
@@ -94,6 +121,7 @@ gsm/
   runtime/          docker.py (Container), local.py (ohne Container)
   games/            ein Spiel = eine Klasse (base.py beschreibt die Schnittstelle)
     minecraft.py, minecraft_providers.py, modrinth.py
+  deploy/install.sh Installation als Systemdienst + HTTPS-Proxy
   static/           Oberfläche: index.html, app.js (Router, Ansichten), style.css (Designsystem)
 tests/              python -m unittest discover -s tests
 ```

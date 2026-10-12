@@ -233,7 +233,9 @@ class Manager:
         target = safe_join(self._addon_dir(inst), filename)
         with open(target, "wb") as out:
             shutil.copyfileobj(stream, out)
-        if target.stat().st_size < 4 or open(target, "rb").read(2) != b"PK":
+        with open(target, "rb") as written:
+            magic = written.read(2)
+        if magic != b"PK":
             target.unlink()
             raise ValueError(f"{filename} ist keine gültige .jar-Datei")
         return filename

@@ -162,6 +162,20 @@ class WebTests(unittest.TestCase):
         self.assertEqual(self.call("GET", "/instances", cookie=cookie)[0], 401)
         self.assertEqual(self.call("GET", "/instances", cookie=new_cookie.split(";")[0])[0], 200)
 
+    def test_behind_https_proxy(self):
+        """Hinter Caddy/nginx: Cookie wird 'Secure', echte Client-IP im Protokoll, Origin der Domain akzeptiert."""
+        proxy = {"X-Forwarded-Proto": "https", "X-Forwarded-For": "203.0.113.7", "X-Forwarded-Host": "manager.example.de",
+                 "Origin": "https://manager.example.de"}
+        status, _, cookie = self.call("POST", "/login", {"username": "chef", "password": "chef-passwort"}, headers=proxy)
+        self.assertEqual(status, 200)
+        self.assertIn("Secure", cookie)
+        self.assertIn("HttpOnly", cookie)
+        self.assertIn("SameSite=strict", cookie)
+        entries = self.call("GET", "/audit", cookie=self.login("chef", "chef-passwort"))[1]
+        self.assertTrue(any(e["ip"] == "203.0.113.7" for e in entries))
+        status, _, _ = self.call("PATCH", "/instances/web", {"memory": "2G"}, cookie=cookie.split(";")[0], headers=proxy)
+        self.assertEqual(status, 200)
+
     def test_audit_log_records_changes(self):
         admin = self.login("chef", "chef-passwort")
         self.call("PATCH", "/instances/web", {"memory": "2G"}, cookie=admin)

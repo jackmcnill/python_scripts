@@ -12,6 +12,8 @@ def main():
     serve = sub.add_parser("serve", help="Weboberfläche starten")
     serve.add_argument("--host", default="127.0.0.1", help="Standard: nur lokal (127.0.0.1)")
     serve.add_argument("--port", type=int, default=8080)
+    serve.add_argument("--trusted-proxies", default="127.0.0.1",
+                       help="Adressen von Reverse-Proxys, deren X-Forwarded-*-Header vertraut wird (Standard: 127.0.0.1)")
     passwd = sub.add_parser("passwd", help="Passwort eines Benutzers setzen (z.B. wenn das Admin-Passwort verloren ging)")
     passwd.add_argument("username", nargs="?", default="admin")
     adduser = sub.add_parser("adduser", help="Benutzer anlegen")
@@ -51,7 +53,8 @@ def main():
     ctx = Context()
     print(f"Runtime: {ctx.runtime.name} | Daten: {config.DATA_DIR}")
     ctx.start_background()
-    uvicorn.run(create_app(ctx), host=args.host, port=args.port, log_level="warning")
+    uvicorn.run(create_app(ctx), host=args.host, port=args.port, log_level="warning",
+                proxy_headers=True, forwarded_allow_ips=args.trusted_proxies)
 
 
 if __name__ == "__main__":
