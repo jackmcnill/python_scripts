@@ -6,6 +6,8 @@ funktioniert. Backups laufen regelmäßig automatisch.
 
 ## Funktionen
 
+- **Moderne Oberfläche**: Dashboard mit Server-Karten, Terminal-Konsole mit farbigen Log-Ebenen, Befehlsverlauf (Pfeiltasten) und Schnellbefehlen, Drag-and-drop für Mods, Hell/Dunkel-Design (folgt dem System, umschaltbar), Toasts statt Pop-ups, Fortschrittsanzeige für Hintergrundaufgaben und eine mobile Ansicht. Direkte Links wie `#/server/survival/console` funktionieren. Alles ohne Build-Schritt und ohne externe Ressourcen, also auch im LAN ohne Internet.
+
 - **Server anlegen**: Vanilla, Paper, Fabric, Forge, NeoForge, jeweils in beliebiger (auch älterer) Minecraft-Version.
   Die passende Java-Version wird automatisch gewählt (aus den Mojang-Daten).
 - **Konsole** im Browser (Live-Log, Befehle senden), Start/Stopp/Neustart, Autostart.
@@ -92,7 +94,7 @@ gsm/
   runtime/          docker.py (Container), local.py (ohne Container)
   games/            ein Spiel = eine Klasse (base.py beschreibt die Schnittstelle)
     minecraft.py, minecraft_providers.py, modrinth.py
-  static/           Oberfläche (HTML/JS/CSS ohne Build-Schritt)
+  static/           Oberfläche: index.html, app.js (Router, Ansichten), style.css (Designsystem)
 tests/              python -m unittest discover -s tests
 ```
 

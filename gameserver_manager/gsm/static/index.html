@@ -3,11 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>Game Server Manager</title>
+<script>
+  /* Design vor dem ersten Zeichnen setzen (kein Aufblitzen) */
+  try {
+    var t = localStorage.getItem("gsm_theme");
+    if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app"></div>
+<noscript>Diese Oberfläche benötigt JavaScript.</noscript>
 <script src="app.js"></script>
 </body>
 </html>
