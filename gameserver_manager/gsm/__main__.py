@@ -12,26 +12,39 @@ def main():
     serve = sub.add_parser("serve", help="Weboberfläche starten")
     serve.add_argument("--host", default="127.0.0.1", help="Standard: nur lokal (127.0.0.1)")
     serve.add_argument("--port", type=int, default=8080)
-    sub.add_parser("passwd", help="Passwort der Weboberfläche ändern")
+    passwd = sub.add_parser("passwd", help="Passwort eines Benutzers setzen (z.B. wenn das Admin-Passwort verloren ging)")
+    passwd.add_argument("username", nargs="?", default="admin")
+    adduser = sub.add_parser("adduser", help="Benutzer anlegen")
+    adduser.add_argument("username")
+    adduser.add_argument("--admin", action="store_true", help="als Administrator")
     args = parser.parse_args()
 
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
-    if args.command == "passwd":
-        password = getpass.getpass("Neues Passwort: ")
-        if len(password) < 8 or password != getpass.getpass("Wiederholen: "):
-            sys.exit("Passwörter stimmen nicht überein oder sind kürzer als 8 Zeichen.")
-        config.ensure_auth()
-        config.set_password(password)
-        print("Passwort geändert.")
+    from .users import UserError, UserStore
+
+    store = UserStore()
+    if args.command in ("passwd", "adduser"):
+        password = getpass.getpass("Passwort: ")
+        if password != getpass.getpass("Wiederholen: "):
+            sys.exit("Passwörter stimmen nicht überein.")
+        try:
+            if args.command == "passwd":
+                store.update(args.username, password=password)
+                print(f"Passwort für '{args.username}' geändert.")
+            else:
+                store.create(args.username, password, "admin" if args.admin else "user")
+                print(f"Benutzer '{args.username}' angelegt.")
+        except (UserError, KeyError) as exc:
+            sys.exit(f"Fehler: {exc.args[0]}")
         return
 
     import uvicorn
     from .web import Context, create_app
 
-    new_password = config.ensure_auth()
-    if new_password:
-        print(f"\nErster Start. Passwort für die Weboberfläche: {new_password}\n"
-              "(ändern mit: python -m gsm passwd)\n")
+    created = store.ensure_admin()
+    if created and created[1]:
+        print(f"\nErster Start. Anmeldung mit Benutzer '{created[0]}' und Passwort: {created[1]}\n"
+              "Weitere Benutzer legst du in der Weboberfläche unter 'Benutzer' an.\n")
     if args.host not in ("127.0.0.1", "localhost", "::1"):
         print("WARNUNG: Die Oberfläche ist über das Netzwerk erreichbar, aber unverschlüsselt (HTTP).\n"
               "Setze einen Reverse-Proxy mit HTTPS davor oder nutze einen VPN/SSH-Tunnel.\n")

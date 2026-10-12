@@ -17,6 +17,7 @@ from gsm.games.minecraft_providers import Forge, NeoForge
 from gsm.instances import Busy
 from gsm.jobs import Jobs
 from gsm.runtime.docker import DockerRuntime
+from gsm.users import UserError, UserStore
 from gsm.util import parse_memory_mb, safe_filename, safe_join, ver_key
 
 
@@ -304,11 +305,72 @@ class ConfigTests(unittest.TestCase):
         stored = config.hash_password("geheim123")
         self.assertTrue(config.check_password("geheim123", stored))
         self.assertFalse(config.check_password("falsch", stored))
-        token = config.make_session_token("s3cret")
-        self.assertTrue(config.check_session_token("s3cret", token))
-        self.assertFalse(config.check_session_token("other", token))
-        self.assertFalse(config.check_session_token("s3cret", config.make_session_token("s3cret", ttl=-5)))
-        self.assertFalse(config.check_session_token("s3cret", "müll"))
+        token = config.make_session_token("s3cret", "anna", 4)
+        self.assertEqual(config.parse_session_token("s3cret", token), ("anna", 4))
+        self.assertIsNone(config.parse_session_token("other", token))
+        self.assertIsNone(config.parse_session_token("s3cret", config.make_session_token("s3cret", "anna", 4, ttl=-5)))
+        self.assertIsNone(config.parse_session_token("s3cret", "müll"))
+        forged = token.replace("anna", "admin")
+        self.assertIsNone(config.parse_session_token("s3cret", forged))
+
+
+class UserStoreTests(unittest.TestCase):
+    def setUp(self):
+        self.store = UserStore(Path(config.DATA_DIR) / f"users-{self.id().split('.')[-1]}.json")
+        self.store.create("root", "passwort-root", "admin")
+
+    def test_create_and_verify(self):
+        self.store.create("Anna", "geheim-123", "user", {"srv": "operator"})
+        self.assertIsNotNone(self.store.verify("anna", "geheim-123"))          # Name ohne Beachtung der Schreibweise
+        self.assertIsNone(self.store.verify("anna", "falsch"))
+        self.assertIsNone(self.store.verify("niemand", "geheim-123"))
+        self.assertNotIn("password_hash", self.store.list()[0])
+
+    def test_validation(self):
+        for args in (("x", "passwort-123"), ("gut", "kurz"), ("bad name", "passwort-123")):
+            with self.assertRaises(UserError):
+                self.store.create(*args)
+        with self.assertRaises(UserError):
+            self.store.create("root", "passwort-root")                         # doppelt
+        with self.assertRaises(UserError):
+            self.store.create("neu", "passwort-123", "user", {"srv": "god"})   # ungültiges Recht
+
+    def test_levels(self):
+        user = self.store.create("bob", "passwort-123", "user", {"a": "operator"})
+        user = self.store.get("bob")
+        self.assertTrue(UserStore.can(user, "a", "viewer"))
+        self.assertTrue(UserStore.can(user, "a", "operator"))
+        self.assertFalse(UserStore.can(user, "a", "manager"))
+        self.assertFalse(UserStore.can(user, "b", "viewer"))                   # fremder Server
+        self.assertTrue(UserStore.can(self.store.get("root"), "irgendwas", "manager"))
+
+    def test_last_admin_protected(self):
+        with self.assertRaises(UserError):
+            self.store.delete("root")
+        with self.assertRaises(UserError):
+            self.store.update("root", role="user")
+        with self.assertRaises(UserError):
+            self.store.update("root", disabled=True)
+        self.store.create("zweiter", "passwort-123", "admin")
+        self.store.delete("root")
+
+    def test_password_change_invalidates_sessions(self):
+        before = self.store.get("root")["tv"]
+        self.store.change_own_password("root", "passwort-root", "neues-passwort")
+        self.assertEqual(self.store.get("root")["tv"], before + 1)
+        self.assertIsNone(self.store.verify("root", "passwort-root"))
+        with self.assertRaises(UserError):
+            self.store.change_own_password("root", "falsch", "nochmal-neu-123")
+
+    def test_disabled_cannot_login(self):
+        self.store.create("sperr", "passwort-123", "user")
+        self.store.update("sperr", disabled=True)
+        self.assertIsNone(self.store.verify("sperr", "passwort-123"))
+
+    def test_forget_server(self):
+        self.store.create("cc", "passwort-123", "user", {"a": "viewer", "b": "manager"})
+        self.store.forget_server("a")
+        self.assertEqual(self.store.get("cc")["servers"], {"b": "manager"})
 
 
 if __name__ == "__main__":

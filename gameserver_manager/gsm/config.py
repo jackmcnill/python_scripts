@@ -69,43 +69,39 @@ def check_password(password, stored):
     return hmac.compare_digest(hash_password(password, salt), stored)
 
 
-def ensure_auth():
-    """Stellt Passwort-Hash und Cookie-Secret sicher. Gibt ein neu erzeugtes Passwort zurück (sonst None)."""
-    raw = {}
+def ensure_secret():
+    """Stellt das Cookie-Secret sicher und gibt es zurück."""
     try:
-        raw = json.loads(_settings_path().read_text(encoding="utf-8"))
+        secret = json.loads(_settings_path().read_text(encoding="utf-8")).get("secret")
     except (OSError, ValueError):
-        pass
-    updates, new_password = {}, None
-    if not raw.get("secret"):
-        updates["secret"] = secrets.token_hex(32)
-    if not raw.get("password_hash"):
-        new_password = os.environ.get("GSM_PASSWORD") or secrets.token_urlsafe(12)
-        updates["password_hash"] = hash_password(new_password)
-    if updates:
-        save_settings(updates)
-    return new_password
+        secret = None
+    if not secret:
+        secret = secrets.token_hex(32)
+        save_settings({"secret": secret})
+    return secret
 
 
-def set_password(password):
-    save_settings({"password_hash": hash_password(password)})
-
-
-def auth_state():
-    raw = json.loads(_settings_path().read_text(encoding="utf-8"))
-    return raw["password_hash"], raw["secret"]
-
-
-def make_session_token(secret, ttl=7 * 24 * 3600):
-    expires = str(int(time.time()) + ttl)
-    sig = hmac.new(secret.encode(), expires.encode(), "sha256").hexdigest()
-    return f"{expires}.{sig}"
-
-
-def check_session_token(secret, token):
+def legacy_password_hash():
+    """Passwort-Hash aus der Einzelnutzer-Version (wird beim ersten Start übernommen)."""
     try:
-        expires, sig = token.split(".", 1)
-        good = hmac.new(secret.encode(), expires.encode(), "sha256").hexdigest()
-        return hmac.compare_digest(sig, good) and int(expires) > time.time()
+        return json.loads(_settings_path().read_text(encoding="utf-8")).get("password_hash")
+    except (OSError, ValueError):
+        return None
+
+
+def make_session_token(secret, username, version, ttl=7 * 24 * 3600):
+    body = f"{username}:{version}:{int(time.time()) + ttl}"
+    return f"{body}:{hmac.new(secret.encode(), body.encode(), 'sha256').hexdigest()}"
+
+
+def parse_session_token(secret, token):
+    """-> (username, version) oder None, wenn ungültig/abgelaufen."""
+    try:
+        body, sig = token.rsplit(":", 1)
+        username, version, expires = body.rsplit(":", 2)
+        good = hmac.new(secret.encode(), body.encode(), "sha256").hexdigest()
+        if hmac.compare_digest(sig, good) and int(expires) > time.time():
+            return username, int(version)
     except (ValueError, AttributeError):
-        return False
+        pass
+    return None

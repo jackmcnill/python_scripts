@@ -30,8 +30,34 @@ pip install -r requirements.txt
 python -m gsm serve                 # http://127.0.0.1:8080
 ```
 
-Beim ersten Start wird ein Passwort erzeugt und einmalig angezeigt (oder vorher `GSM_PASSWORD` setzen).
-Ändern: `python -m gsm passwd`.
+Beim ersten Start wird der Administrator `admin` mit einem Zufallspasswort angelegt und einmalig angezeigt
+(oder vorher `GSM_PASSWORD` setzen). Weitere Benutzer legst du in der Oberfläche unter **Benutzer & Protokoll** an.
+
+Auf der Kommandozeile (z.B. bei vergessenem Passwort):
+`python -m gsm passwd [NAME]` und `python -m gsm adduser NAME [--admin]`.
+
+## Benutzer und Rechte
+
+Ohne Anmeldung ist nichts erreichbar. Es gibt zwei Rollen:
+
+| Rolle | Darf |
+|---|---|
+| **Administrator** | alles: Server erstellen/löschen, Modpacks importieren, Benutzer und Protokoll |
+| **Benutzer** | nur die zugewiesenen Server, je nach Recht pro Server |
+
+Rechte pro Server (jedes schließt das vorherige ein):
+
+| Recht | Darf zusätzlich |
+|---|---|
+| **Ansehen** | Server, Konsole (nur lesen), Mods und Backup-Liste sehen |
+| **Bedienen** | Starten, Stoppen, Neustart, Konsolenbefehle, Backup erstellen |
+| **Verwalten** | Einstellungen, Mods/Plugins, Backups wiederherstellen/löschen/herunterladen |
+
+Weitere Schutzmaßnahmen: Passwörter werden mit scrypt gehasht (mind. 8 Zeichen), nach einer Passwortänderung
+oder Sperrung werden bestehende Sitzungen ungültig, Fehlversuche beim Login werden zunehmend gebremst,
+Cookies sind `HttpOnly` und `SameSite=Strict`, Anfragen von fremden Webseiten werden abgelehnt, und der letzte
+aktive Administrator kann nicht gelöscht oder gesperrt werden. Alle Änderungen und Konsolenbefehle landen im
+**Protokoll** (`audit.log` im Datenordner, Ansicht für Admins in der Oberfläche).
 
 Daten (Server, Backups, Einstellungen) liegen in `~/gameserver-manager`, änderbar mit `GSM_DATA`.
 
@@ -56,7 +82,9 @@ Umgebungsvariablen: `GSM_DATA`, `GSM_PASSWORD`, `GSM_RUNTIME`, `GSM_JAVA_IMAGE`,
 
 ```
 gsm/
-  web.py            Weboberfläche + JSON-API (Starlette), Anmeldung
+  web.py            Weboberfläche + JSON-API (Starlette), Anmeldung, Rechteprüfung
+  users.py          Benutzer, Rollen, Rechte pro Server
+  audit.py          Protokoll
   instances.py      Server anlegen/starten/stoppen, Mods/Plugins
   backup.py         Backups, Aufbewahrung, Zeitplan
   modpacks.py       .mrpack-Import

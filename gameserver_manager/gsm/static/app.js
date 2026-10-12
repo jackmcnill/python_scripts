@@ -1,6 +1,7 @@
 "use strict";
 // --- Hilfen ------------------------------------------------------------------
 const $ = (sel, root = document) => root.querySelector(sel);
+const add = (parent, ...kids) => parent.append(...kids.filter(Boolean));
 function h(tag, attrs = {}, ...children) {
   const el = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs || {})) {
@@ -23,7 +24,11 @@ async function api(path, opts = {}) {
   return data;
 }
 const fmtSize = b => b > 1e9 ? (b / 1e9).toFixed(1) + " GB" : b > 1e6 ? (b / 1e6).toFixed(1) + " MB" : Math.ceil(b / 1e3) + " KB";
-const state = { authed: null, instances: [], sel: null, tab: "overview", system: null, games: [], jobs: [] };
+const state = { authed: null, user: null, view: "server", instances: [], sel: null, tab: "overview", system: null, games: [], jobs: [] };
+const RANK = { viewer: 1, operator: 2, manager: 3 };
+const PERM_LABEL = { viewer: "Ansehen", operator: "Bedienen", manager: "Verwalten" };
+const can = (inst, level) => RANK[inst.permission] >= RANK[level];
+const isAdmin = () => state.user?.role === "admin";
 let ws = null, pollTimer = null;
 
 // --- Jobs --------------------------------------------------------------------
@@ -63,13 +68,14 @@ const act = (path, title, opts = {}) => api(path, { method: "POST", ...opts }).t
 // --- Login -------------------------------------------------------------------
 function loginView() {
   const err = h("div", { class: "err" });
-  const pw = h("input", { type: "password", placeholder: "Passwort", autofocus: true });
+  const user = h("input", { placeholder: "Benutzername", autofocus: true, autocomplete: "username", style: "width:100%" });
+  const pw = h("input", { type: "password", placeholder: "Passwort", autocomplete: "current-password", style: "width:100%;margin-top:8px" });
   const submit = async () => {
-    try { await api("/login", { method: "POST", json: { password: pw.value } }); state.authed = true; await start(); }
+    try { state.user = await api("/login", { method: "POST", json: { username: user.value, password: pw.value } }); state.authed = true; await start(); }
     catch (e) { err.textContent = e.message; }
   };
-  pw.addEventListener("keydown", e => e.key === "Enter" && submit());
-  return h("div", { class: "card login" }, h("h1", {}, "Game Server Manager"), pw, h("p", {}, h("button", { class: "primary", onclick: submit }, "Anmelden")), err);
+  for (const el of [user, pw]) el.addEventListener("keydown", e => e.key === "Enter" && submit());
+  return h("div", { class: "card login" }, h("h1", {}, "Game Server Manager"), user, pw, h("p", {}, h("button", { class: "primary", onclick: submit }, "Anmelden")), err);
 }
 
 // --- Layout ------------------------------------------------------------------
@@ -79,18 +85,22 @@ function render() {
   if (!state.authed) return app.replaceChildren(loginView());
   const side = h("div", { class: "side" },
     h("h1", {}, "Game Server Manager"),
-    ...state.instances.map(i => h("button", { class: "item" + (i.id === state.sel ? " active" : ""), onclick: () => select(i.id) },
+    ...state.instances.map(i => h("button", { class: "item" + (state.view === "server" && i.id === state.sel ? " active" : ""), onclick: () => select(i.id) },
       h("span", { class: "dot " + (i.busy ? "busy" : i.state) }), i.name)),
-    h("button", { class: "primary", onclick: createDialog }, "+ Neuer Server"),
-    h("button", { onclick: importDialog }, "Modpack importieren"),
-    h("div", { class: "muted" }, state.system ? `Runtime: ${state.system.runtime}${state.system.runtime_ok ? "" : " (!)"} · ${state.system.disk_free_gb} GB frei` : ""),
-    h("button", { onclick: async () => { await api("/logout", { method: "POST" }); state.authed = false; render(); } }, "Abmelden"));
+    !state.instances.length && h("p", { class: "muted" }, isAdmin() ? "Noch keine Server." : "Dir ist noch kein Server zugewiesen."),
+    isAdmin() && h("button", { class: "primary", onclick: createDialog }, "+ Neuer Server"),
+    isAdmin() && h("button", { onclick: importDialog }, "Modpack importieren"),
+    isAdmin() && h("button", { class: state.view === "users" ? "item active" : "", onclick: () => { state.view = "users"; closeWs(); render(); } }, "Benutzer & Protokoll"),
+    h("div", { class: "muted" }, state.system?.disk_free_gb != null ? `Runtime: ${state.system.runtime}${state.system.runtime_ok ? "" : " (!)"} · ${state.system.disk_free_gb} GB frei` : ""),
+    h("div", { class: "muted" }, `Angemeldet: ${state.user.username}${isAdmin() ? " (Admin)" : ""}`),
+    h("button", { onclick: accountDialog }, "Passwort ändern"),
+    h("button", { onclick: async () => { await api("/logout", { method: "POST" }); state.authed = false; state.user = null; closeWs(); render(); } }, "Abmelden"));
   const inst = state.instances.find(i => i.id === state.sel);
-  const main = h("div", { class: "main" }, inst ? detailView(inst) : h("p", { class: "muted" }, "Wähle links einen Server oder lege einen neuen an."));
-  app.replaceChildren(h("div", { class: "layout" }, side, main));
+  const content = state.view === "users" ? usersView() : inst ? detailView(inst) : h("p", { class: "muted" }, "Wähle links einen Server.");
+  app.replaceChildren(h("div", { class: "layout" }, side, h("div", { class: "main" }, content)));
 }
 
-function select(id) { state.sel = id; state.tab = "overview"; closeWs(); render(); }
+function select(id) { state.sel = id; state.view = "server"; state.tab = "overview"; closeWs(); render(); }
 function closeWs() { if (ws) { ws.close(); ws = null; } }
 
 function detailView(inst) {
@@ -115,19 +125,19 @@ function overviewTab(inst, body) {
   const running = inst.state === "running", busy = !!inst.busy;
   const mem = h("input", { value: inst.memory, size: 6 }), port = h("input", { type: "number", value: inst.port, style: "width:100px" });
   const auto = h("input", { type: "checkbox", checked: inst.auto_start });
-  body.append(
+  add(body, 
     h("div", { class: "card" },
       h("div", { class: "row" },
-        h("button", { class: "primary", disabled: running || busy, onclick: () => act(`/instances/${inst.id}/start`, `${inst.name} starten`) }, "Starten"),
-        h("button", { disabled: !running || busy, onclick: () => act(`/instances/${inst.id}/stop`, `${inst.name} stoppen`) }, "Stoppen"),
-        h("button", { disabled: !running || busy, onclick: () => act(`/instances/${inst.id}/restart`, `${inst.name} neu starten`) }, "Neustart"),
-        h("button", { class: "danger", disabled: !running, onclick: () => confirm("Prozess hart beenden? Ungespeicherte Daten gehen verloren.") && api(`/instances/${inst.id}/kill`, { method: "POST" }).then(refresh) }, "Beenden erzwingen")),
+        h("button", { class: "primary", disabled: running || busy || !can(inst, "operator"), onclick: () => act(`/instances/${inst.id}/start`, `${inst.name} starten`) }, "Starten"),
+        h("button", { disabled: !running || busy || !can(inst, "operator"), onclick: () => act(`/instances/${inst.id}/stop`, `${inst.name} stoppen`) }, "Stoppen"),
+        h("button", { disabled: !running || busy || !can(inst, "operator"), onclick: () => act(`/instances/${inst.id}/restart`, `${inst.name} neu starten`) }, "Neustart"),
+        h("button", { class: "danger", disabled: !running || !can(inst, "operator"), onclick: () => confirm("Prozess hart beenden? Ungespeicherte Daten gehen verloren.") && api(`/instances/${inst.id}/kill`, { method: "POST" }).then(refresh) }, "Beenden erzwingen")),
       h("p", { class: "muted" }, `Verbinden mit: <Server-Adresse>:${inst.port}`)),
-    h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Einstellungen"),
+    can(inst, "manager") && h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Einstellungen"),
       h("div", { class: "grid2" }, h("div", {}, h("label", {}, "Arbeitsspeicher (z.B. 4G)"), mem), h("div", {}, h("label", {}, "Port"), port)),
       h("label", { class: "inline" }, auto, "Automatisch starten, wenn der Manager startet"),
       h("p", {}, h("button", { onclick: async () => { try { await api(`/instances/${inst.id}`, { method: "PATCH", json: { memory: mem.value, port: +port.value, auto_start: auto.checked } }); await refresh(); alert(running ? "Gespeichert. Gilt nach dem nächsten Neustart." : "Gespeichert."); } catch (e) { alert(e.message); } } }, "Speichern"))),
-    h("div", { class: "card" }, h("button", { class: "danger", disabled: running || busy, onclick: () => {
+    isAdmin() && h("div", { class: "card" }, h("button", { class: "danger", disabled: running || busy, onclick: () => {
       if (!confirm(`Server "${inst.name}" samt Welt löschen?`)) return;
       const keep = confirm("Auch alle Backups dieses Servers löschen?\nOK = Backups löschen, Abbrechen = Backups behalten");
       api(`/instances/${inst.id}`, { method: "DELETE", json: { delete_backups: keep } }).then(r => { state.sel = null; trackJob(r.job, "Server löschen"); }).catch(e => alert(e.message));
@@ -138,7 +148,7 @@ function overviewTab(inst, body) {
 function consoleTab(inst, body) {
   const out = h("pre", { class: "console" });
   const input = h("input", { placeholder: "Befehl eingeben (z.B. list, say Hallo, op Name)", style: "width:100%" });
-  body.append(out, input);
+  add(body, out, can(inst, "operator") ? input : h("p", { class: "muted" }, "Du darfst die Konsole nur ansehen."));
   const connect = () => {
     ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/instances/${inst.id}/console`);
     ws.onmessage = e => { const stick = out.scrollTop + out.clientHeight >= out.scrollHeight - 30; out.append(e.data + "\n"); if (out.textContent.length > 200000) out.textContent = out.textContent.slice(-100000); if (stick) out.scrollTop = out.scrollHeight; };
@@ -146,19 +156,19 @@ function consoleTab(inst, body) {
   };
   connect();
   input.addEventListener("keydown", e => { if (e.key === "Enter" && input.value.trim() && ws?.readyState === 1) { ws.send(input.value); input.value = ""; } });
-  input.focus();
+  if (can(inst, "operator")) input.focus();
 }
 
 // --- Tab: Mods / Plugins ------------------------------------------------------------
 async function modsTab(inst, body) {
-  if (inst.kind === "vanilla") return body.append(h("p", { class: "muted" }, "Vanilla-Server unterstützen keine Mods. Lege einen Fabric-, Forge-, NeoForge- oder Paper-Server an."));
+  if (inst.kind === "vanilla") return add(body, h("p", { class: "muted" }, "Vanilla-Server unterstützen keine Mods. Lege einen Fabric-, Forge-, NeoForge- oder Paper-Server an."));
   const list = h("div"), results = h("div");
   const label = inst.kind === "paper" ? "Plugin" : "Mod";
   const loadList = async () => {
     const items = await api(`/instances/${inst.id}/addons`);
     list.replaceChildren(items.length ? h("table", {}, h("tr", {}, h("th", {}, "Name"), h("th", {}, "Datei"), h("th", {}, "Größe"), h("th")),
       items.map(m => h("tr", {}, h("td", {}, m.title, m.version && h("span", { class: "muted" }, " " + m.version)), h("td", { class: "muted" }, m.file), h("td", {}, fmtSize(m.size)),
-        h("td", { class: "row" },
+        can(inst, "manager") && h("td", { class: "row" },
           h("button", { onclick: async () => { await api(`/instances/${inst.id}/addons/${encodeURIComponent(m.file)}`, { method: "PATCH", json: { enabled: !m.enabled } }); loadList(); } }, m.enabled ? "Deaktivieren" : "Aktivieren"),
           h("button", { class: "danger", onclick: async () => { if (confirm(`${m.file} löschen?`)) { await api(`/instances/${inst.id}/addons/${encodeURIComponent(m.file)}`, { method: "DELETE" }); loadList(); } } }, "Löschen"))))) : h("p", { class: "muted" }, `Noch keine ${label}s installiert.`));
   };
@@ -179,11 +189,12 @@ async function modsTab(inst, body) {
     } catch (e) { results.replaceChildren(h("p", { class: "err" }, e.message)); }
   };
   q.addEventListener("keydown", e => e.key === "Enter" && search());
-  body.append(h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, `Installierte ${label}s`), list),
-    h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, ".jar-Dateien hochladen"), h("div", { class: "row" }, file, h("button", { onclick: upload }, "Hochladen"))),
-    h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Modrinth"), h("div", { class: "row" }, q, h("button", { onclick: search }, "Suchen")),
+  const editable = can(inst, "manager");
+  add(body, h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, `Installierte ${label}s`), list),
+    editable && h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, ".jar-Dateien hochladen"), h("div", { class: "row" }, file, h("button", { onclick: upload }, "Hochladen"))),
+    editable && h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Modrinth"), h("div", { class: "row" }, q, h("button", { onclick: search }, "Suchen")),
       h("p", { class: "muted" }, "Abhängigkeiten werden automatisch mitinstalliert. Es werden nur Projekte angezeigt, die auf dem Server laufen."), results));
-  loadList(); search();
+  loadList(); if (editable) search();
 }
 
 // --- Tab: Backups --------------------------------------------------------------------------
@@ -198,14 +209,14 @@ async function backupsTab(inst, body) {
     list.replaceChildren(items.length ? h("table", {}, h("tr", {}, h("th", {}, "Backup"), h("th", {}, "Erstellt"), h("th", {}, "Größe"), h("th")),
       items.map(i => h("tr", {}, h("td", {}, i.name), h("td", {}, i.created.replace("T", " ")), h("td", {}, fmtSize(i.size)),
         h("td", { class: "row" },
-          h("a", { href: `/api/instances/${inst.id}/backups/${i.name}/download` }, h("button", {}, "Download")),
-          h("button", { disabled: inst.state === "running", title: inst.state === "running" ? "Server zuerst stoppen" : "", onclick: () => confirm(`Server auf "${i.name}" zurücksetzen?\nDer aktuelle Stand wird vorher gesichert.`) && act(`/instances/${inst.id}/backups/${i.name}/restore`, "Wiederherstellen") }, "Wiederherstellen"),
-          h("button", { class: "danger", onclick: async () => { if (confirm("Backup löschen?")) { await api(`/instances/${inst.id}/backups/${i.name}`, { method: "DELETE" }); load(); } } }, "Löschen"))))) : h("p", { class: "muted" }, "Noch keine Backups."));
+          can(inst, "manager") && h("a", { href: `/api/instances/${inst.id}/backups/${i.name}/download` }, h("button", {}, "Download")),
+          can(inst, "manager") && h("button", { disabled: inst.state === "running", title: inst.state === "running" ? "Server zuerst stoppen" : "", onclick: () => confirm(`Server auf "${i.name}" zurücksetzen?\nDer aktuelle Stand wird vorher gesichert.`) && act(`/instances/${inst.id}/backups/${i.name}/restore`, "Wiederherstellen") }, "Wiederherstellen"),
+          can(inst, "manager") && h("button", { class: "danger", onclick: async () => { if (confirm("Backup löschen?")) { await api(`/instances/${inst.id}/backups/${i.name}`, { method: "DELETE" }); load(); } } }, "Löschen"))))) : h("p", { class: "muted" }, "Noch keine Backups."));
   };
-  body.append(
+  add(body, 
     h("div", { class: "card" }, h("div", { class: "row space" }, h("h3", { style: "margin:0" }, "Backups"),
-      h("button", { class: "primary", onclick: () => act(`/instances/${inst.id}/backups`, "Backup erstellen", {}) .then(() => setTimeout(load, 3000)) }, "Jetzt sichern")), list),
-    h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Automatische Backups"),
+      can(inst, "operator") && h("button", { class: "primary", onclick: () => act(`/instances/${inst.id}/backups`, "Backup erstellen", {}) .then(() => setTimeout(load, 3000)) }, "Jetzt sichern")), list),
+    can(inst, "manager") && h("div", { class: "card" }, h("h3", { style: "margin-top:0" }, "Automatische Backups"),
       h("label", { class: "inline" }, en, "Aktiv"),
       h("div", { class: "row" }, "Alle ", iv, " Stunden, die letzten ", keep, " behalten"),
       h("label", {}, "Umfang"), scope,
@@ -275,21 +286,84 @@ function importDialog() {
     } }, "Importieren"));
 }
 
+// --- Benutzer & Konto ------------------------------------------------------------------------
+function usersView() {
+  const box = h("div"), logBox = h("div");
+  const load = async () => {
+    const users = await api("/users");
+    box.replaceChildren(h("table", {}, h("tr", {}, h("th", {}, "Benutzer"), h("th", {}, "Rolle"), h("th", {}, "Serverrechte"), h("th")),
+      users.map(u => h("tr", {}, h("td", {}, u.username, u.disabled && h("span", { class: "badge", style: "margin-left:6px" }, "gesperrt")),
+        h("td", {}, u.role === "admin" ? "Administrator" : "Benutzer"),
+        h("td", { class: "muted" }, u.role === "admin" ? "alle Server" : Object.entries(u.servers).map(([s, l]) => `${s}: ${PERM_LABEL[l]}`).join(", ") || "keine"),
+        h("td", { class: "row" }, h("button", { onclick: () => userDialog(u, load) }, "Bearbeiten"),
+          u.username.toLowerCase() !== state.user.username.toLowerCase() && h("button", { class: "danger", onclick: async () => { if (confirm(`Benutzer "${u.username}" löschen?`)) { try { await api(`/users/${encodeURIComponent(u.username)}`, { method: "DELETE" }); load(); } catch (e) { alert(e.message); } } } }, "Löschen"))))));
+  };
+  const loadLog = async () => {
+    const entries = await api("/audit?limit=100");
+    logBox.replaceChildren(h("table", {}, h("tr", {}, h("th", {}, "Zeit"), h("th", {}, "Benutzer"), h("th", {}, "Aktion"), h("th", {}, "")),
+      entries.map(e => h("tr", {}, h("td", { class: "muted" }, e.time.replace("T", " ")), h("td", {}, e.user), h("td", {}, e.action), h("td", { class: "muted" }, e.status ?? "")))));
+  };
+  setTimeout(() => { load(); loadLog(); });
+  return h("div", {}, h("div", { class: "row space" }, h("h2", { style: "margin:0" }, "Benutzer"), h("button", { class: "primary", onclick: () => userDialog(null, load) }, "+ Benutzer")),
+    h("div", { class: "card" }, box),
+    h("p", { class: "muted" }, "Administratoren dürfen alles. Normale Benutzer sehen nur zugewiesene Server: Ansehen (Konsole lesen), Bedienen (+ starten/stoppen, Befehle, Backup erstellen), Verwalten (+ Mods, Einstellungen, Backups wiederherstellen)."),
+    h("h3", {}, "Protokoll (letzte 100 Aktionen)"), h("div", { class: "card" }, logBox));
+}
+
+function userDialog(user, reload) {
+  const name = h("input", { value: user?.username || "", disabled: !!user, placeholder: "Benutzername", style: "width:100%" });
+  const pw = h("input", { type: "password", placeholder: user ? "leer lassen = unverändert" : "mind. 8 Zeichen", autocomplete: "new-password", style: "width:100%" });
+  const role = h("select", {}, h("option", { value: "user", selected: user?.role !== "admin" }, "Benutzer"), h("option", { value: "admin", selected: user?.role === "admin" }, "Administrator"));
+  const blocked = h("input", { type: "checkbox", checked: !!user?.disabled });
+  const perms = {};
+  const table = h("table", {}, state.instances.map(i => {
+    const sel = h("select", {}, h("option", { value: "" }, "kein Zugriff"), ...Object.entries(PERM_LABEL).map(([k, v]) => h("option", { value: k, selected: user?.servers?.[i.id] === k }, v)));
+    perms[i.id] = sel;
+    return h("tr", {}, h("td", {}, i.name), h("td", {}, sel));
+  }));
+  const permBox = h("div", {}, h("label", {}, "Rechte pro Server"), state.instances.length ? table : h("p", { class: "muted" }, "Noch keine Server vorhanden."));
+  const syncRole = () => (permBox.style.display = role.value === "admin" ? "none" : "");
+  role.addEventListener("change", syncRole); syncRole();
+  const d = dialog(user ? `Benutzer ${user.username}` : "Neuer Benutzer", h("div", {},
+    h("label", {}, "Benutzername"), name, h("label", {}, user ? "Neues Passwort" : "Passwort"), pw, h("label", {}, "Rolle"), role, permBox,
+    user && h("label", { class: "inline" }, blocked, "Konto sperren")),
+    h("button", { class: "primary", onclick: async () => {
+      const servers = Object.fromEntries(Object.entries(perms).filter(([, el]) => el.value).map(([id, el]) => [id, el.value]));
+      try {
+        if (user) await api(`/users/${encodeURIComponent(user.username)}`, { method: "PATCH", json: { role: role.value, servers, disabled: blocked.checked, ...(pw.value ? { password: pw.value } : {}) } });
+        else await api("/users", { method: "POST", json: { username: name.value, password: pw.value, role: role.value, servers } });
+        d.close(); reload();
+      } catch (e) { alert(e.message); }
+    } }, "Speichern"));
+}
+
+function accountDialog() {
+  const cur = h("input", { type: "password", autocomplete: "current-password", style: "width:100%" });
+  const next = h("input", { type: "password", autocomplete: "new-password", style: "width:100%" });
+  const d = dialog("Passwort ändern", h("div", {}, h("label", {}, "Aktuelles Passwort"), cur, h("label", {}, "Neues Passwort (mind. 8 Zeichen)"), next),
+    h("button", { class: "primary", onclick: async () => {
+      try { await api("/me/password", { method: "POST", json: { current: cur.value, new: next.value } }); d.close(); alert("Passwort geändert."); }
+      catch (e) { alert(e.message); }
+    } }, "Ändern"));
+}
+
 // --- Start ------------------------------------------------------------------------------------
 async function refresh() {
   if (!state.authed) return;
   try { state.instances = await api("/instances"); } catch { return; }
   // nur neu zeichnen, wenn sich etwas Sichtbares geändert hat (sonst würden Konsole/Formulare zurückgesetzt)
-  const sig = JSON.stringify(state.instances.map(i => [i.id, i.state, i.busy, i.name, i.port, i.memory, i.backup]));
+  const sig = JSON.stringify(state.instances.map(i => [i.id, i.state, i.busy, i.name, i.port, i.memory, i.backup, i.permission]));
   if (sig !== refresh.last) { refresh.last = sig; render(); }
 }
 async function start() {
-  [state.system, state.games] = await Promise.all([api("/system"), api("/games")]);
+  state.view = "server"; state.sel = null; state.tab = "overview"; refresh.last = null;
+  state.system = await api("/system");
+  state.games = isAdmin() ? await api("/games") : [];
   await refresh(); render();
   clearInterval(pollTimer); pollTimer = setInterval(refresh, 3000);
 }
 (async () => {
   const s = await fetch("/api/session").then(r => r.json());
-  state.authed = s.authenticated;
+  state.authed = s.authenticated; state.user = s.user;
   if (state.authed) await start(); else render();
 })();

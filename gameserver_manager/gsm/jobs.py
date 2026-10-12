@@ -5,7 +5,8 @@ import uuid
 
 
 class Job:
-    def __init__(self, title):
+    def __init__(self, title, owner=None):
+        self.owner = owner
         self.id = uuid.uuid4().hex[:12]
         self.title = title
         self.state = "running"          # running | done | error
@@ -31,9 +32,9 @@ class Jobs:
         self._jobs = {}
         self._lock = threading.Lock()
 
-    def start(self, title, fn):
+    def start(self, title, fn, owner=None):
         """Führt fn(job) in einem Thread aus. fn darf ein Ergebnis zurückgeben."""
-        job = Job(title)
+        job = Job(title, owner)
         with self._lock:
             self._jobs[job.id] = job
             for old in sorted(self._jobs.values(), key=lambda j: j.started)[:-50]:
