@@ -4,39 +4,128 @@ Spieleserver (zuerst Minecraft) über eine Webseite erstellen und verwalten. Jed
 eigenen **Docker-Container**, damit jede Java-Version (8, 17, 21, 25) unabhängig von der Distribution
 funktioniert. Backups laufen regelmäßig automatisch.
 
+Projektstand und offene Aufgaben: siehe [STATUS.md](STATUS.md).
+
 ## Funktionen
 
-- **Moderne Oberfläche**: Dashboard mit Server-Karten, Terminal-Konsole mit farbigen Log-Ebenen, Befehlsverlauf (Pfeiltasten) und Schnellbefehlen, Drag-and-drop für Mods, Hell/Dunkel-Design (folgt dem System, umschaltbar), Toasts statt Pop-ups, Fortschrittsanzeige für Hintergrundaufgaben und eine mobile Ansicht. Direkte Links wie `#/server/survival/console` funktionieren. Alles ohne Build-Schritt und ohne externe Ressourcen, also auch im LAN ohne Internet.
-
-- **Server anlegen**: Vanilla, Paper, Fabric, Forge, NeoForge, jeweils in beliebiger (auch älterer) Minecraft-Version.
-  Die passende Java-Version wird automatisch gewählt (aus den Mojang-Daten).
+- **Moderne Oberfläche**: Dashboard mit Server-Karten, Terminal-Konsole mit farbigen Log-Ebenen, Befehlsverlauf
+  (Pfeiltasten) und Schnellbefehlen, Drag-and-drop für Mods, Hell/Dunkel-Design, Fortschrittsanzeige für
+  Hintergrundaufgaben, mobile Ansicht. Alles ohne Build-Schritt und ohne externe Ressourcen.
+- **Server anlegen**: Vanilla, Paper, Fabric, Forge, NeoForge, jeweils in beliebiger (auch älterer)
+  Minecraft-Version. Die passende Java-Version wird automatisch gewählt.
 - **Konsole** im Browser (Live-Log, Befehle senden), Start/Stopp/Neustart, Autostart.
-- **Mods/Plugins**: `.jar` hochladen, auf/von **Modrinth** suchen und mit Abhängigkeiten installieren,
-  einzeln deaktivieren oder löschen.
+- **Mods/Plugins**: `.jar` hochladen, auf Modrinth suchen und mit Abhängigkeiten installieren,
+  deaktivieren oder löschen.
 - **Modpacks**: Modrinth-Modpacks (`.mrpack`, per Datei oder Link/Slug) werden als neuer Server eingespielt.
   Loader und Versionen kommen aus dem Pack, Client-only-Mods werden übersprungen.
 - **Backups**: manuell und per Zeitplan (alle N Stunden, die letzten N behalten), kompletter Server oder nur
-  Welten. Läuft der Server, wird vorher die Welt gespeichert (`save-off`/`save-all`). Download und
-  Wiederherstellung über die Oberfläche (vor einer Wiederherstellung wird der aktuelle Stand gesichert).
+  Welten. Läuft der Server, wird vorher die Welt gespeichert. Download und Wiederherstellung über die
+  Oberfläche (vor einer Wiederherstellung wird der aktuelle Stand gesichert).
+- **Benutzerverwaltung**: Administratoren und Benutzer mit Rechten pro Server, Protokoll aller Änderungen.
 
-## Voraussetzungen
+---
 
-- Python 3.12+ und Docker (der Nutzer muss `docker` ausführen dürfen, z.B. Gruppe `docker`)
-- Ohne Docker fällt der Manager auf eine lokal installierte Java-Version zurück (nur für Tests gedacht).
+## Installation
 
-## Start
+### Was du brauchst
+
+- Einen **Linux-Server** (Debian oder Ubuntu, empfohlen **Ubuntu 24.04**) mit Root-Zugriff (`sudo`).
+  Python muss mindestens Version **3.12** sein (`python3 --version`); Ubuntu 22.04 ist zu alt.
+- Genug Arbeitsspeicher für die Minecraft-Server (pro Server 2 bis 8 GB, dazu etwas Reserve) und Festplatte
+  für Welten und Backups.
+- Für den Zugriff über das Internet eine **Domain**, die auf den Server zeigt (sonst siehe Variante B).
+
+Windows und macOS werden für den Dauerbetrieb nicht unterstützt (das Install-Skript ist für Linux).
+
+### Variante A: Server mit Domain und HTTPS (empfohlen)
+
+1. **Domain vorbereiten:** Lege bei deinem Domain-Anbieter einen DNS-Eintrag (Typ `A`, bei IPv6 `AAAA`) an,
+   z. B. `manager.deine-domain.de`, der auf die öffentliche IP deines Servers zeigt. Bei wechselnder IP
+   brauchst du DynDNS.
+2. **Ports öffnen:** In Firewall und (falls zuhause) Router müssen **80** und **443** zum Server weitergeleitet
+   werden. Das braucht Caddy für das HTTPS-Zertifikat und den Zugriff.
+3. **Per SSH auf dem Server anmelden** und den Code holen:
+   ```bash
+   sudo apt update && sudo apt install -y git
+   git clone -b minecraft-servermanager https://github.com/jackmcnill/python_scripts.git
+   cd python_scripts/gameserver_manager
+   ```
+   Ist das Repository privat, fragt Git nach Benutzername und Passwort. Als Passwort gibst du einen
+   GitHub-Personal-Access-Token ein.
+4. **Installieren:**
+   ```bash
+   sudo ./deploy/install.sh --domain manager.deine-domain.de
+   ```
+   Das Skript installiert Docker, richtet die Python-Umgebung und den Systemdienst `gsm` ein, setzt Caddy als
+   HTTPS-Proxy davor und legt den Administrator an.
+   **Am Ende wird das Admin-Passwort einmalig angezeigt. Notiere es dir.**
+   (Zum Vorab-Test: `sudo ./deploy/install.sh --dry-run --domain ...` zeigt nur, was passieren würde.)
+5. **Anmelden:** Öffne `https://manager.deine-domain.de` im Browser, Benutzer `admin` und das Passwort aus
+   Schritt 4. Das Zertifikat holt Caddy beim ersten Aufruf automatisch, das kann einen Moment dauern.
+6. **Passwort ändern und Benutzer anlegen:** Oben rechts im Konto-Menü *Passwort ändern*; weitere Benutzer
+   unter *Benutzer & Protokoll* (siehe [Benutzer und Rechte](#benutzer-und-rechte)).
+7. **Ersten Server erstellen:** *Neuer Server*, Typ und Version wählen, Namen und Port eingeben, die
+   Minecraft-EULA akzeptieren. Beim ersten Mal lädt Docker das Java-Image, das dauert etwas.
+8. **Minecraft-Ports freigeben:** Jeder Server hat einen eigenen Port (Standard 25565). Gib diese Ports in
+   Firewall und Router frei (TCP), z. B. mit `sudo ufw allow 25565/tcp`. Spieler verbinden sich mit
+   `deine-domain.de:PORT` (bei 25565 genügt die Domain).
+
+### Variante B: ohne Domain oder ohne offene Ports (VPN/Tunnel)
 
 ```bash
-cd gameserver_manager
-pip install -r requirements.txt
-python -m gsm serve                 # http://127.0.0.1:8080
+git clone -b minecraft-servermanager https://github.com/jackmcnill/python_scripts.git
+cd python_scripts/gameserver_manager
+sudo ./deploy/install.sh
 ```
 
-Beim ersten Start wird der Administrator `admin` mit einem Zufallspasswort angelegt und einmalig angezeigt
-(oder vorher `GSM_PASSWORD` setzen). Weitere Benutzer legst du in der Oberfläche unter **Benutzer & Protokoll** an.
+Der Manager läuft dann auf Port **8080 ohne HTTPS**. Gib diesen Port **nicht** ins Internet frei, sondern
+erreiche ihn über ein VPN (Tailscale, WireGuard), einen SSH-Tunnel (`ssh -L 8080:localhost:8080 server`) oder
+einen Cloudflare Tunnel. Aufruf dann z. B. `http://<VPN-IP>:8080`.
 
-Auf der Kommandozeile (z.B. bei vergessenem Passwort):
-`python -m gsm passwd [NAME]` und `python -m gsm adduser NAME [--admin]`.
+### Variante C: manuell (zum Ausprobieren, z. B. auf dem eigenen PC unter Linux)
+
+```bash
+sudo apt install -y git python3 python3-venv docker.io
+sudo usermod -aG docker $USER          # danach einmal ab- und wieder anmelden
+git clone -b minecraft-servermanager https://github.com/jackmcnill/python_scripts.git
+cd python_scripts/gameserver_manager
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m gsm serve          # http://127.0.0.1:8080
+```
+
+Beim ersten Start steht das Admin-Passwort im Terminal. Zum Zugriff aus dem Netzwerk `--host 0.0.0.0`
+anhängen (unverschlüsselt, nur im vertrauenswürdigen Netz).
+
+### Updates, Betrieb, Deinstallation
+
+| Aufgabe | Befehl |
+|---|---|
+| Update | `cd python_scripts/gameserver_manager && git pull && sudo systemctl restart gsm` |
+| Status | `systemctl status gsm` |
+| Logs | `journalctl -u gsm -f` |
+| Neustart / Stopp | `sudo systemctl restart gsm` / `sudo systemctl stop gsm` |
+| Passwort zurücksetzen | `.venv/bin/python -m gsm passwd admin` |
+| Benutzer anlegen (CLI) | `.venv/bin/python -m gsm adduser NAME [--admin]` |
+| Deinstallieren | `sudo systemctl disable --now gsm; sudo rm /etc/systemd/system/gsm.service` |
+
+Die Daten (Server, Welten, Backups, Benutzer) liegen im Datenordner `~/gameserver-manager` des Dienst-Benutzers
+(änderbar mit der Umgebungsvariable `GSM_DATA`). **Sichere diesen Ordner**, er enthält alles. Die Server laufen
+als Docker-Container namens `gsm-<name>`; ein Neustart des Managers beendet sie nicht.
+
+### Fehlersuche
+
+| Problem | Lösung |
+|---|---|
+| `permission denied` beim Zugriff auf Docker | Benutzer in die Gruppe `docker` aufnehmen und neu anmelden: `sudo usermod -aG docker $USER`, danach `sudo systemctl restart gsm` |
+| Server startet nicht, Image kann nicht geladen werden (`429 Too Many Requests`) | Docker Hub begrenzt Abrufe. In `settings.json` ein anderes Image eintragen, z. B. `"java_image": "mirror.gcr.io/library/eclipse-temurin:{java}-jre"` |
+| Seite nicht erreichbar / Zertifikatsfehler | DNS-Eintrag und offene Ports 80/443 prüfen, `journalctl -u caddy -f` |
+| Konsole bleibt leer (hinter nginx) | WebSocket-Header ergänzen (siehe [Proxy](#reverse-proxy-und-https)) |
+| Spieler können nicht verbinden | Port des Servers in Firewall/Router freigeben (TCP), in der Übersicht den Port prüfen |
+| Admin-Passwort vergessen | `.venv/bin/python -m gsm passwd admin` auf dem Server |
+| Server stoppt sofort | Konsole und `docker logs gsm-<name>` ansehen; oft zu wenig RAM oder falsche Mod-Version |
+
+---
 
 ## Benutzer und Rechte
 
@@ -55,59 +144,35 @@ Rechte pro Server (jedes schließt das vorherige ein):
 | **Bedienen** | Starten, Stoppen, Neustart, Konsolenbefehle, Backup erstellen |
 | **Verwalten** | Einstellungen, Mods/Plugins, Backups wiederherstellen/löschen/herunterladen |
 
-Weitere Schutzmaßnahmen: Passwörter werden mit scrypt gehasht (mind. 8 Zeichen), nach einer Passwortänderung
-oder Sperrung werden bestehende Sitzungen ungültig, Fehlversuche beim Login werden zunehmend gebremst,
-Cookies sind `HttpOnly` und `SameSite=Strict`, Anfragen von fremden Webseiten werden abgelehnt, und der letzte
-aktive Administrator kann nicht gelöscht oder gesperrt werden. Alle Änderungen und Konsolenbefehle landen im
-**Protokoll** (`audit.log` im Datenordner, Ansicht für Admins in der Oberfläche).
+Schutzmaßnahmen: Passwörter werden mit scrypt gehasht (mind. 8 Zeichen), nach einer Passwortänderung oder
+Sperrung werden bestehende Sitzungen ungültig, Fehlversuche beim Login werden zunehmend gebremst, Cookies sind
+`HttpOnly` und `SameSite=Strict` (hinter HTTPS zusätzlich `Secure`), Anfragen von fremden Webseiten werden
+abgelehnt, und der letzte aktive Administrator kann nicht gelöscht oder gesperrt werden. Alle Änderungen und
+Konsolenbefehle landen im **Protokoll** (`audit.log` im Datenordner, Ansicht für Admins in der Oberfläche).
 
-Daten (Server, Backups, Einstellungen) liegen in `~/gameserver-manager`, änderbar mit `GSM_DATA`.
+## Reverse-Proxy und HTTPS
 
-### Auf einem Server installieren und von außen erreichbar machen
-
-Auf einem Debian/Ubuntu-Server (Python 3.12+, z. B. Ubuntu 24.04):
-
-```bash
-git clone -b minecraft-servermanager https://github.com/jackmcnill/python_scripts.git
-cd python_scripts/gameserver_manager
-sudo ./deploy/install.sh --domain manager.deine-domain.de
-```
-
-Das Skript installiert Docker und die Python-Umgebung, legt den Administrator an (das Passwort wird einmalig
-angezeigt), richtet den Systemdienst `gsm` ein und setzt **Caddy** als HTTPS-Proxy davor. Das Zertifikat holt
-Caddy automatisch. Mit `--dry-run` zeigt das Skript nur, was es tun würde.
-
-Voraussetzungen für den Zugriff von außen:
-
-1. Ein DNS-Eintrag (A/AAAA) der Domain zeigt auf den Server (bei wechselnder IP z. B. per DynDNS).
-2. Die Ports **80 und 443** sind in Firewall und Router erreichbar (nur für den Manager).
-3. Die Minecraft-Ports der Server (Standard 25565, je Server eigener Port) sind separat freigegeben.
-
-Der Manager selbst lauscht dabei nur auf `127.0.0.1`; von außen ist er nur über HTTPS erreichbar. Er erkennt
-den Proxy (`X-Forwarded-*`): Cookies werden `Secure`, im Protokoll steht die echte Client-IP. Ein anderer
-Proxy als lokal wird mit `--trusted-proxies` freigegeben.
-
-Ohne eigene Domain oder ohne offene Ports: Tailscale/WireGuard (VPN) oder ein Cloudflare Tunnel; dann den
-Manager mit `sudo ./deploy/install.sh` (ohne `--domain`) installieren und den Port nicht ins Internet freigeben.
+Mit `--domain` richtet das Skript Caddy ein. Der Manager lauscht dann nur auf `127.0.0.1`, von außen geht es
+nur über HTTPS. Er erkennt den Proxy (`X-Forwarded-*`): Cookies werden `Secure`, im Protokoll steht die echte
+Client-IP. Ein anderer Proxy als lokal wird mit `--trusted-proxies` freigegeben.
 
 Nutzt du nginx statt Caddy, brauchst du für die Konsole WebSocket-Header:
 `proxy_http_version 1.1; proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection "upgrade";`
 sowie `proxy_set_header Host $host; proxy_set_header X-Forwarded-Proto $scheme; proxy_set_header X-Forwarded-For $remote_addr;`
 und für Uploads ein hohes `client_max_body_size` (Modpacks, Mods).
 
-Update: `git pull && sudo systemctl restart gsm`. Daten liegen in `~/gameserver-manager`.
-
 ## Einstellungen (`settings.json` im Datenordner)
 
 | Schlüssel | Standard | Bedeutung |
 |---|---|---|
-| `runtime` | `auto` | `docker`, `local` oder `auto` (Docker, wenn erreichbar) |
+| `runtime` | `auto` | `docker`, `local` oder `auto` (Docker, wenn erreichbar; sonst lokales Java, nur für Tests) |
 | `java_image` | `eclipse-temurin:{java}-jre` | Container-Image je Java-Version, z.B. für eine Mirror-Registry |
 | `docker_extra_args` | `[]` | zusätzliche Argumente für `docker run` |
 
-Umgebungsvariablen: `GSM_DATA`, `GSM_PASSWORD`, `GSM_RUNTIME`, `GSM_JAVA_IMAGE`, `GSM_DOCKER_ARGS`.
+Umgebungsvariablen: `GSM_DATA`, `GSM_PASSWORD` (nur beim allerersten Start), `GSM_RUNTIME`, `GSM_JAVA_IMAGE`,
+`GSM_DOCKER_ARGS`.
 
-## Aufbau
+## Aufbau (für Entwickler)
 
 ```
 gsm/
@@ -121,10 +186,13 @@ gsm/
   runtime/          docker.py (Container), local.py (ohne Container)
   games/            ein Spiel = eine Klasse (base.py beschreibt die Schnittstelle)
     minecraft.py, minecraft_providers.py, modrinth.py
-  deploy/install.sh Installation als Systemdienst + HTTPS-Proxy
   static/           Oberfläche: index.html, app.js (Router, Ansichten), style.css (Designsystem)
+deploy/install.sh   Installation als Systemdienst + HTTPS-Proxy
 tests/              python -m unittest discover -s tests
 ```
+
+Entwicklung: `pip install -r requirements.txt`, Tests mit `python -m unittest discover -s tests`
+(laufen ohne Docker und ohne Internet). Start mit `python -m gsm serve`.
 
 ### Weiteres Spiel hinzufügen
 
@@ -138,6 +206,6 @@ tests/              python -m unittest discover -s tests
 ## Einschränkungen
 
 - Nur Modrinth-Modpacks (`.mrpack`); CurseForge-Packs brauchen einen API-Key und fehlen noch. Quilt fehlt ebenfalls.
-- Hat der Manager einen Container gestartet, bleibt dieser auch bei Manager-Neustart bestehen; nach einem
-  Neustart des Rechners helfen "Autostart" und der Manager.
-- Eine Instanz pro Port; Docker-Container werden mit einem Speicherlimit (Heap + 768 MB) gestartet.
+- Docker-Container laufen ohne Restart-Policy: Nach einem Neustart des Rechners startet nur, was auf
+  *Automatisch starten* steht (der Manager startet diese Server beim Dienststart).
+- Eine Instanz pro Port; Container bekommen ein Speicherlimit (Heap + 768 MB).
