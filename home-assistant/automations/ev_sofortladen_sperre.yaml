@@ -1,14 +1,18 @@
 alias: EV Sofortladen-Sperre (openWB)
 description: >-
-  Wenn die openWB von selbst auf Instant Charging springt (z. B. nach dem
-  Abstecken), obwohl im Dashboard 'Aus' gewählt ist, wird sofort auf Stop
-  zurückgestellt und eine Meldung gesendet. Greift nur bei
-  input_select.ev_lademodus = Aus.
+  Wenn die openWB den Lademodus von selbst auf etwas anderes als Stop/Standby
+  stellt (z. B. Instant Charging nach dem Abstecken), obwohl im Dashboard 'Aus'
+  gewählt ist, wird sofort auf Stop zurückgestellt und eine Meldung gesendet.
+  Greift nur bei input_select.ev_lademodus = Aus.
 mode: single
 triggers:
   - trigger: state
     entity_id: select.openwb_chargepoint_1_lademodus
-    to: Instant Charging
+    not_to:
+      - Stop
+      - Standby
+      - unknown
+      - unavailable
 conditions:
   - condition: state
     entity_id: input_select.ev_lademodus
@@ -23,5 +27,5 @@ actions:
     data:
       title: Wallbox gesperrt
       message: >-
-        Die openWB wollte auf Sofortladen wechseln, obwohl 'Aus' eingestellt
-        ist. Ich habe sie wieder auf Stop gestellt.
+        Die openWB wollte auf {{ trigger.to_state.state }} wechseln, obwohl
+        'Aus' eingestellt ist. Ich habe sie wieder auf Stop gestellt.
