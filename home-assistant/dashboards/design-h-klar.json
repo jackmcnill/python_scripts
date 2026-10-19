@@ -1,0 +1,4531 @@
+{
+ "button_card_templates": {
+  "glass": {
+   "hold_action": {
+    "action": "none"
+   },
+   "styles": {
+    "card": [
+     {
+      "background": "linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1))))"
+     },
+     {
+      "backdrop-filter": "blur(24px) saturate(138%)"
+     },
+     {
+      "-webkit-backdrop-filter": "blur(24px) saturate(138%)"
+     },
+     {
+      "border": "1px solid rgba(240,247,255,.44)"
+     },
+     {
+      "border-radius": "21px"
+     },
+     {
+      "box-shadow": "inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14)"
+     },
+     {
+      "color": "#f7f9ff"
+     },
+     {
+      "padding": "12px"
+     },
+     {
+      "text-shadow": "0 1px 2px rgba(0,0,0,.45)"
+     },
+     {
+      "overflow": "hidden"
+     }
+    ],
+    "icon": [
+     {
+      "color": "#b7eafa"
+     },
+     {
+      "width": "29px"
+     },
+     {
+      "filter": "drop-shadow(0 0 5px currentColor)"
+     }
+    ],
+    "label": [
+     {
+      "color": "#d7e4f3"
+     },
+     {
+      "font-size": "12px"
+     }
+    ],
+    "name": [
+     {
+      "color": "#fff"
+     },
+     {
+      "font-size": "14px"
+     },
+     {
+      "font-weight": "700"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "none"
+   }
+  },
+  "heading": {
+   "show_icon": false,
+   "show_label": true,
+   "styles": {
+    "card": [
+     {
+      "background": "none"
+     },
+     {
+      "border": "0"
+     },
+     {
+      "box-shadow": "none"
+     },
+     {
+      "backdrop-filter": "none"
+     },
+     {
+      "-webkit-backdrop-filter": "none"
+     },
+     {
+      "padding": "6px 1px 0"
+     },
+     {
+      "border-radius": "0"
+     },
+     {
+      "height": "35px"
+     },
+     {
+      "min-height": "0"
+     }
+    ],
+    "name": [
+     {
+      "font-size": "16px"
+     },
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-weight": "650"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"n l\""
+     },
+     {
+      "grid-template-columns": "minmax(0,1fr) auto"
+     },
+     {
+      "align-items": "center"
+     }
+    ],
+    "label": [
+     {
+      "justify-self": "end"
+     },
+     {
+      "font-size": "13px"
+     },
+     {
+      "font-weight": "500"
+     },
+     {
+      "color": "#dbe6f3"
+     },
+     {
+      "padding-right": "4px"
+     }
+    ]
+   },
+   "template": "glass"
+  },
+  "hero": {
+   "custom_fields": {
+    "weather": "[[[ const e=states['weather.forecast_zuhause']; const t=e?.attributes?.temperature; const m={'sunny':['☀️','Sonnig'],'clear-night':['🌙','Klarer Himmel'],'cloudy':['☁️','Bewölkt'],'partlycloudy':['⛅','Teils bewölkt'],'rainy':['🌧️','Regen'],'pouring':['🌧️','Starkregen'],'snowy':['🌨️','Schnee'],'fog':['🌫️','Nebel'],'lightning':['⛈️','Gewitter'],'lightning-rainy':['⛈️','Gewitter'],'windy':['💨','Windig'],'hail':['🌨️','Hagel']}; const c=(e&&m[e.state])||['🌡️',e?e.state:'—']; return '<span style=\"font-size:26px;margin-right:9px\">'+c[0]+'</span><span style=\"display:flex;flex-direction:column;line-height:1.2\"><b style=\"font-size:16px\">'+(t==null?'—':String(t).replace('.',',')+' °C')+'</b><small style=\"font-size:10px;opacity:.8\">'+c[1]+'</small></span>'; ]]]"
+   },
+   "label": "Willkommen zuhause",
+   "name": "[[[ const h=new Date().getHours(); return h<11?'Guten Morgen':h<17?'Guten Tag':'Guten Abend'; ]]]",
+   "show_icon": false,
+   "show_label": true,
+   "show_state": false,
+   "styles": {
+    "card": [
+     {
+      "height": "106px"
+     },
+     {
+      "background": "transparent"
+     },
+     {
+      "padding": "8px 3px"
+     },
+     {
+      "justify-content": "center"
+     },
+     {
+      "border": "none"
+     },
+     {
+      "box-shadow": "none"
+     },
+     {
+      "backdrop-filter": "none"
+     },
+     {
+      "-webkit-backdrop-filter": "none"
+     },
+     {
+      "text-shadow": "0 2px 8px rgba(0,0,0,.7)"
+     }
+    ],
+    "custom_fields": {
+     "weather": [
+      {
+       "grid-area": "weather"
+      },
+      {
+       "align-self": "start"
+      },
+      {
+       "justify-self": "end"
+      },
+      {
+       "display": "flex"
+      },
+      {
+       "align-items": "center"
+      },
+      {
+       "min-width": "0"
+      },
+      {
+       "padding": "9px 11px"
+      },
+      {
+       "border-radius": "30px"
+      },
+      {
+       "background": "linear-gradient(140deg,rgba(236,243,255,.23),rgba(30,49,73,.20))"
+      },
+      {
+       "border": "1px solid rgba(245,249,255,.39)"
+      },
+      {
+       "backdrop-filter": "blur(18px) saturate(145%)"
+      },
+      {
+       "-webkit-backdrop-filter": "blur(18px) saturate(145%)"
+      },
+      {
+       "box-shadow": "inset 0 1px 0 rgba(255,255,255,.3),0 6px 18px #0002"
+      }
+     ]
+    },
+    "grid": [
+     {
+      "grid-template-areas": "\"n weather\" \"l weather\""
+     },
+     {
+      "grid-template-columns": "minmax(0,1fr) auto"
+     },
+     {
+      "grid-template-rows": "min-content min-content"
+     },
+     {
+      "align-items": "center"
+     }
+    ],
+    "label": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-size": "15px"
+     },
+     {
+      "margin-top": "6px"
+     },
+     {
+      "color": "#d5e0f1"
+     },
+     {
+      "white-space": "normal"
+     }
+    ],
+    "name": [
+     {
+      "font-size": "clamp(23px,5.5vw,33px)"
+     },
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-weight": "550"
+     },
+     {
+      "letter-spacing": "-.7px"
+     },
+     {
+      "line-height": "1.08"
+     }
+    ]
+   },
+   "template": "glass",
+   "triggers_update": [
+    "weather.forecast_zuhause"
+   ],
+   "update_timer": 60000
+  },
+  "lock_status": {
+   "name": "[[[ return [\"jammed\",\"opening\",\"open\"].includes(entity?.state) ? \"Haustür prüfen\" : \"Haustür\"; ]]]",
+   "styles": {
+    "card": [
+     {
+      "background": "[[[ return [\"jammed\",\"open\",\"opening\"].includes(entity?.state)?\"linear-gradient(125deg,rgba(104,47,57,calc(.62 * var(--gi-k,1))),rgba(74,42,66,calc(.40 * var(--gi-k,1))))\":\"linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1))))\"; ]]]"
+     },
+     {
+      "border": "[[[ return [\"jammed\",\"open\",\"opening\"].includes(entity?.state)?\"1px solid rgba(255,139,140,.60)\":\"1px solid rgba(235,245,255,.37)\"; ]]]"
+     },
+     {
+      "height": "104px"
+     },
+     {
+      "padding": "12px 12px 12px 12px"
+     }
+    ],
+    "icon": [
+     {
+      "width": "52px"
+     },
+     {
+      "height": "52px"
+     },
+     {
+      "padding": "12px"
+     },
+     {
+      "box-sizing": "border-box"
+     },
+     {
+      "border-radius": "20px"
+     },
+     {
+      "justify-self": "start"
+     },
+     {
+      "align-self": "center"
+     },
+     {
+      "background": "linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05))"
+     },
+     {
+      "border": "1px solid rgba(255,255,255,.26)"
+     },
+     {
+      "color": "[[[ return ['jammed','open','opening'].includes(entity?.state) ? '#ff7f73' : '#8febcc'; ]]]"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i n chev\" \"i l chev\""
+     },
+     {
+      "grid-template-columns": "56px minmax(0,1fr) 16px"
+     },
+     {
+      "grid-template-rows": "min-content min-content"
+     },
+     {
+      "column-gap": "12px"
+     },
+     {
+      "align-items": "center"
+     }
+    ],
+    "name": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-size": "15px"
+     },
+     {
+      "font-weight": "650"
+     },
+     {
+      "white-space": "normal"
+     },
+     {
+      "line-height": "1.15"
+     }
+    ],
+    "label": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "margin-top": "4px"
+     },
+     {
+      "font-size": "12px"
+     },
+     {
+      "line-height": "1.3"
+     },
+     {
+      "white-space": "normal"
+     },
+     {
+      "color": "#d7e4f3"
+     }
+    ],
+    "custom_fields": {
+     "badge": [
+      {
+       "grid-area": "i"
+      },
+      {
+       "justify-self": "end"
+      },
+      {
+       "align-self": "start"
+      },
+      {
+       "margin": "-6px -6px 0 0"
+      },
+      {
+       "z-index": "2"
+      }
+     ],
+     "chev": [
+      {
+       "grid-area": "chev"
+      },
+      {
+       "justify-self": "end"
+      },
+      {
+       "align-self": "center"
+      }
+     ]
+    }
+   },
+   "template": "status",
+   "show_label": true,
+   "label": "[[[ const s=entity?.state; const bad=['jammed','open','opening'].includes(entity?.state); const m={jammed:'Verklemmt',open:'Offen',opening:'Öffnet',locked:'Verriegelt',unlocked:'Entriegelt',locking:'Verriegelt…',unlocking:'Entriegelt…',unavailable:'Nicht verfügbar',unknown:'Nicht verfügbar'}; const t=m[s]||s||'—'; const c=bad?'#ffb59a':(s==='locked'?'#a8f0cf':'#e1eaf5'); return 'Schloss meldet:<br><span style=\"color:'+c+';font-weight:650\">'+t+'</span>'; ]]]",
+   "custom_fields": {
+    "badge": "[[[ return ['jammed','open','opening'].includes(entity?.state) ? '<div style=\"width:22px;height:22px;border-radius:50%;background:#f0604f;color:#fff;font-weight:800;font-size:14px;line-height:22px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.35)\">!</div>' : ''; ]]]",
+    "chev": "<span style=\"font-size:26px;line-height:1;color:#fff;opacity:.85\">›</span>"
+   }
+  },
+  "metric": {
+   "label": "[[[\n      if(!entity || ['unavailable','unknown'].includes(entity.state))return '—';\n      const n=Number(entity.state);const u=entity.attributes.unit_of_measurement||'';\n      return (Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):entity.state)+(u?' '+u:'');\n    ]]]",
+   "show_label": true,
+   "show_state": false,
+   "styles": {
+    "card": [
+     {
+      "height": "103px"
+     },
+     {
+      "padding": "10px 2px"
+     },
+     {
+      "border-radius": "19px"
+     },
+     {
+      "box-shadow": "inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14)"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i\" \"n\" \"l\""
+     },
+     {
+      "grid-template-rows": "30px 20px min-content"
+     },
+     {
+      "grid-template-columns": "1fr"
+     }
+    ],
+    "icon": [
+     {
+      "width": "30px"
+     },
+     {
+      "color": "[[[ return variables.tint||'#9ed6fa'; ]]]"
+     },
+     {
+      "filter": "drop-shadow(0 0 5px currentColor)"
+     }
+    ],
+    "label": [
+     {
+      "font-size": "15px"
+     },
+     {
+      "font-weight": "800"
+     },
+     {
+      "text-align": "center"
+     },
+     {
+      "white-space": "nowrap"
+     }
+    ],
+    "name": [
+     {
+      "font-size": "10px"
+     },
+     {
+      "font-weight": "600"
+     },
+     {
+      "text-align": "center"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "more-info"
+   },
+   "template": "glass"
+  },
+  "nav": {
+   "show_label": false,
+   "styles": {
+    "card": [
+     {
+      "height": "55px"
+     },
+     {
+      "padding": "6px 2px"
+     },
+     {
+      "border-radius": "24px"
+     },
+     {
+      "background": "[[[ return variables.active ? \"linear-gradient(120deg,rgba(100,170,224,.31),rgba(67,113,177,.18))\" : \"transparent\"; ]]]"
+     },
+     {
+      "border": "[[[ return variables.active ? \"1px solid rgba(168,219,255,.27)\" : \"1px solid transparent\"; ]]]"
+     },
+     {
+      "box-shadow": "[[[ return variables.active ? \"inset 0 1px 0 rgba(255,255,255,.24),0 1px 12px rgba(101,188,233,.12)\" : \"none\"; ]]]"
+     },
+     {
+      "backdrop-filter": "none"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i\" \"n\""
+     },
+     {
+      "grid-template-columns": "1fr"
+     },
+     {
+      "grid-template-rows": "31px 14px"
+     }
+    ],
+    "icon": [
+     {
+      "width": "25px"
+     },
+     {
+      "color": "[[[ return variables.active?'#9df4e7':'#d5e0eb'; ]]]"
+     },
+     {
+      "filter": "drop-shadow(0 0 5px currentColor)"
+     }
+    ],
+    "name": [
+     {
+      "font-size": "10px"
+     },
+     {
+      "color": "[[[ return variables.active?'#a8faeb':'#cedaea'; ]]]"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "navigate",
+    "navigation_path": "[[[ return variables.destination; ]]]"
+   },
+   "template": "glass"
+  },
+  "picture_room": {
+   "hold_action": {
+    "action": "more-info",
+    "entity": "[[[ return variables.main_entity; ]]]"
+   },
+   "label": "[[[\n      const fmt=(id)=>{\n        if(!id) return '';\n        const obj=states[id];\n        if(!obj || ['unavailable','unknown'].includes(obj.state)) return 'Nicht verfügbar';\n        const map={on:'Ein',off:'Aus',open:'Offen',closed:'Geschlossen',home:'Zuhause',not_home:'Abwesend',locked:'Verriegelt',unlocked:'Entriegelt',jammed:'Verklemmt'};\n        if(obj.attributes.current_temperature!==undefined) return String(obj.attributes.current_temperature).replace('.',',')+' °C';\n        const u=obj.attributes.unit_of_measurement||'';\n        const n=Number(obj.state);\n        return Number.isFinite(n)&&obj.state.trim()!=='' ? n.toLocaleString('de-DE',{maximumFractionDigits:1})+(u?' '+u:'') : (map[obj.state]||obj.state);\n      };\n      const lines=variables.rows||[];\n      return lines.map(r=>`${r.icon||'•'} ${r.text||''}${r.entity?fmt(r.entity):''}`).join('<br>');\n    ]]]",
+   "show_icon": true,
+   "show_label": true,
+   "show_state": false,
+   "styles": {
+    "card": [
+     {
+      "height": "88px"
+     },
+     {
+      "padding": "9px 10px"
+     },
+     {
+      "background": "[[[ return `linear-gradient(90deg,rgba(10,16,29,calc(.82 * var(--gi-k,1))) 0%,rgba(12,20,34,calc(.63 * var(--gi-k,1))) 39%,rgba(12,20,34,calc(.34 * var(--gi-k,1))) 76%,rgba(12,20,34,calc(.20 * var(--gi-k,1))) 100%),url(\"${variables.image}\") center/cover no-repeat`; ]]]"
+     },
+     {
+      "border": "1px solid rgba(239,247,255,.38)"
+     },
+     {
+      "border-radius": "19px"
+     },
+     {
+      "box-shadow": "inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14)"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i n\" \"i l\""
+     },
+     {
+      "grid-template-columns": "52px minmax(0,1fr)"
+     },
+     {
+      "grid-template-rows": "20px auto"
+     },
+     {
+      "column-gap": "9px"
+     }
+    ],
+    "icon": [
+     {
+      "width": "46px"
+     },
+     {
+      "height": "46px"
+     },
+     {
+      "padding": "9px"
+     },
+     {
+      "box-sizing": "border-box"
+     },
+     {
+      "color": "#f0f6ff"
+     },
+     {
+      "background": "linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.07))"
+     },
+     {
+      "border": "1px solid rgba(255,255,255,.22)"
+     },
+     {
+      "border-radius": "12px"
+     },
+     {
+      "justify-self": "start"
+     },
+     {
+      "align-self": "center"
+     }
+    ],
+    "label": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "align-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-size": "10px"
+     },
+     {
+      "line-height": "1.45"
+     },
+     {
+      "margin-top": "3px"
+     },
+     {
+      "white-space": "normal"
+     },
+     {
+      "color": "#e1eaf5"
+     }
+    ],
+    "name": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "align-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-size": "12px"
+     },
+     {
+      "font-weight": "720"
+     },
+     {
+      "white-space": "nowrap"
+     },
+     {
+      "overflow": "hidden"
+     },
+     {
+      "text-overflow": "ellipsis"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "navigate",
+    "navigation_path": "[[[ return variables.destination; ]]]"
+   },
+   "template": "glass"
+  },
+  "quick": {
+   "label": "[[[ const id=variables.status_entity; const s=states[id]; if(!s) return \"\"; if(variables.status_kind===\"climate\"){ const t=s.attributes.current_temperature; return (s.state===\"off\"?\"Aus\":\"Aktiv\") + (t == null?\"\":\" · \"+String(t).replace(\".\",\",\")+\" °C\"); } if(variables.status_kind===\"cover\"){const p=s.attributes.current_position; return p != null ? p+\" %\" : (s.state===\"open\"?\"Offen\":s.state===\"closed\"?\"Geschlossen\":\"Rollläden\");} if(variables.status_kind===\"car\"){return s.state===\"on\"?\"Bereit\":\"Laden aus\";} if(s.state===\"on\")return \"Ein\"; if(s.state===\"off\")return \"Aus\";return s.state; ]]]",
+   "show_label": true,
+   "styles": {
+    "card": [
+     {
+      "height": "122px"
+     },
+     {
+      "padding": "10px 5px 8px"
+     },
+     {
+      "border-radius": "22px"
+     },
+     {
+      "background": "linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1))))"
+     },
+     {
+      "box-shadow": "[[[ const f = (variables.fog !== undefined) ? variables.fog : 0.38; return 'inset 0 0 26px 2px rgba(232,243,255,' + f + '),inset 0 0 6px rgba(255,255,255,' + (f * 0.65) + '),inset 0 1px 0 rgba(255,255,255,.14)'; ]]]"
+     },
+     {
+      "backdrop-filter": "blur(24px) saturate(138%)"
+     },
+     {
+      "-webkit-backdrop-filter": "blur(24px) saturate(138%)"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i\" \"n\" \"l\""
+     },
+     {
+      "grid-template-columns": "1fr"
+     },
+     {
+      "grid-template-rows": "66px 21px min-content"
+     }
+    ],
+    "icon": [
+     {
+      "width": "58px"
+     },
+     {
+      "height": "58px"
+     },
+     {
+      "padding": "14px"
+     },
+     {
+      "box-sizing": "border-box"
+     },
+     {
+      "justify-self": "center"
+     },
+     {
+      "align-self": "center"
+     },
+     {
+      "border-radius": "50%"
+     },
+     {
+      "color": "[[[ return variables.tint||'#b7eafa'; ]]]"
+     },
+     {
+      "background": "[[[ const id=variables.status_entity; const s=(id&&states[id])?states[id].state:''; const k=variables.status_kind; const on=(k==='light'&&s==='on')||(k==='climate'&&s!==''&&s!=='off'&&s!=='unavailable')||(k==='cover'&&s==='open')||(k==='car'&&s==='on'); const t=variables.tint||'#abdff5'; return on ? 'linear-gradient(145deg,color-mix(in srgb, '+t+' 26%, rgba(255,255,255,.14)),color-mix(in srgb, '+t+' 8%, rgba(255,255,255,.04)))' : 'linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05))'; ]]]"
+     },
+     {
+      "border": "1px solid rgba(255,255,255,.26)"
+     },
+     {
+      "box-shadow": "[[[ const id=variables.status_entity; const s=(id&&states[id])?states[id].state:''; const k=variables.status_kind; const on=(k==='light'&&s==='on')||(k==='climate'&&s!==''&&s!=='off'&&s!=='unavailable')||(k==='cover'&&s==='open')||(k==='car'&&s==='on'); const t=variables.tint||'#abdff5'; return on ? 'inset 0 0 12px '+t+'55, 0 0 8px '+t+'44, inset 0 1px 0 rgba(255,255,255,.3)' : 'inset 0 1px 0 rgba(255,255,255,.2)'; ]]]"
+     },
+     {
+      "aspect-ratio": "1 / 1"
+     },
+     {
+      "min-width": "58px"
+     },
+     {
+      "min-height": "58px"
+     },
+     {
+      "max-width": "58px"
+     },
+     {
+      "max-height": "58px"
+     },
+     {
+      "overflow": "visible"
+     },
+     {
+      "flex": "none"
+     }
+    ],
+    "label": [
+     {
+      "font-size": "10px"
+     },
+     {
+      "color": "#d8e2ee"
+     },
+     {
+      "text-align": "center"
+     },
+     {
+      "white-space": "nowrap"
+     },
+     {
+      "overflow": "hidden"
+     },
+     {
+      "text-overflow": "ellipsis"
+     }
+    ],
+    "name": [
+     {
+      "font-size": "10px"
+     },
+     {
+      "text-align": "center"
+     },
+     {
+      "white-space": "normal"
+     },
+     {
+      "font-weight": "700"
+     },
+     {
+      "align-self": "end"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "navigate",
+    "navigation_path": "[[[ return variables.destination; ]]]"
+   },
+   "template": "glass"
+  },
+  "status": {
+   "label": "[[[ const e=states[entity.entity_id]; if(!e || ['unknown','unavailable'].includes(e.state))return 'Nicht verfügbar'; const s={armed_home:'Aktiv (Zuhause)',armed_away:'Aktiv (Abwesend)',armed_night:'Aktiv (Nacht)',disarmed:'Deaktiviert',arming:'Aktivierung läuft',triggered:'ALARM',jammed:'Verklemmt',locked:'Verriegelt',unlocked:'Entriegelt',home:'Zuhause',not_home:'Abwesend',on:'Ein',off:'Aus'}; return s[e.state]||e.state; ]]]",
+   "show_label": true,
+   "show_state": false,
+   "styles": {
+    "card": [
+     {
+      "min-height": "unset"
+     },
+     {
+      "padding": "12px"
+     },
+     {
+      "height": "100px"
+     },
+     {
+      "border-radius": "22px"
+     }
+    ],
+    "grid": [
+     {
+      "grid-template-areas": "\"i n\" \"i l\""
+     },
+     {
+      "grid-template-columns": "46px minmax(0,1fr)"
+     },
+     {
+      "grid-template-rows": "min-content min-content"
+     },
+     {
+      "column-gap": "8px"
+     }
+    ],
+    "icon": [
+     {
+      "width": "40px"
+     },
+     {
+      "justify-self": "start"
+     },
+     {
+      "align-self": "center"
+     },
+     {
+      "color": "#7ae8b0"
+     },
+     {
+      "filter": "drop-shadow(0 0 5px currentColor)"
+     }
+    ],
+    "label": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "margin-top": "5px"
+     },
+     {
+      "font-size": "11px"
+     },
+     {
+      "white-space": "normal"
+     },
+     {
+      "line-height": "1.2"
+     }
+    ],
+    "name": [
+     {
+      "justify-self": "start"
+     },
+     {
+      "text-align": "left"
+     },
+     {
+      "font-size": "14px"
+     },
+     {
+      "white-space": "normal"
+     }
+    ]
+   },
+   "tap_action": {
+    "action": "more-info"
+   },
+   "template": "glass"
+  }
+ },
+ "title": "Glass Island 3.2 (Kopie)",
+ "views": [
+  {
+   "icon": "mdi:home-variant",
+   "max_columns": 2,
+   "path": "start",
+   "sections": [
+    {
+     "cards": [
+      {
+       "template": "hero",
+       "triggers_update": [
+        "person.marlon",
+        "climate.wohnzimmer_mqtt_hvac"
+       ],
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "type": "tile",
+         "entity": "alarm_control_panel.coruscant_20_status",
+         "name": "Alarm",
+         "icon": "mdi:shield-home",
+         "features": [
+          {
+           "type": "alarm-modes",
+           "modes": [
+            "armed_home",
+            "armed_night",
+            "armed_away"
+           ]
+          }
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(19,40,40,calc(.50 * var(--gi-k,1))),rgba(26,50,48,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(180,255,220,.34) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --tile-color: #7ae8b0;\n  --tile-icon-size: 52px;\n  --mdc-icon-size: 34px;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\nha-tile-icon {\n  --tile-icon-size: 52px;\n  --mdc-icon-size: 34px;\n}\n"
+         }
+        },
+        {
+         "entity": "lock.home",
+         "icon": "mdi:door-closed-lock",
+         "template": "lock_status",
+         "type": "custom:button-card",
+         "tap_action": {
+          "action": "navigate",
+          "navigation_path": "/design-h-klar/sicherheit"
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      },
+      {
+       "name": "Schnellzugriff",
+       "template": "heading",
+       "type": "custom:button-card",
+       "label": "Alle Geräte ›",
+       "tap_action": {
+        "action": "navigate",
+        "navigation_path": "/design-h-klar/raeume"
+       }
+      },
+      {
+       "cards": [
+        {
+         "icon": "mdi:lightbulb",
+         "name": "Licht",
+         "template": "quick",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_1"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "status_entity": "switch.nspanelwohnzimmer_relay_1",
+          "status_kind": "light",
+          "tint": "#ffd283",
+          "fog": 0.38
+         }
+        },
+        {
+         "icon": "mdi:window-shutter-open",
+         "name": "Rollläden",
+         "template": "quick",
+         "triggers_update": [
+          "cover.eltako_esb64np_ipm_4"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/obergeschoss",
+          "status_entity": "cover.eltako_esb64np_ipm_4",
+          "status_kind": "cover",
+          "tint": "#beb0ff",
+          "fog": 0.38
+         }
+        },
+        {
+         "icon": "mdi:fan",
+         "name": "Klima",
+         "template": "quick",
+         "triggers_update": [
+          "climate.wohnzimmer_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/klima",
+          "status_entity": "climate.wohnzimmer_mqtt_hvac",
+          "status_kind": "climate",
+          "tint": "#8fd6ff",
+          "fog": 0.38
+         }
+        },
+        {
+         "icon": "mdi:car-electric-outline",
+         "name": "E-Auto",
+         "template": "quick",
+         "triggers_update": [
+          "binary_sensor.openwb_chargepoint_1_ladekabel"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/auto",
+          "status_entity": "binary_sensor.openwb_chargepoint_1_ladekabel",
+          "status_kind": "car",
+          "tint": "#96edb8",
+          "fog": 0.38
+         }
+        }
+       ],
+       "columns": 4,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "name": "Räume",
+       "template": "heading",
+       "type": "custom:button-card",
+       "label": "Übersicht ›",
+       "tap_action": {
+        "action": "navigate",
+        "navigation_path": "/design-h-klar/raeume"
+       }
+      },
+      {
+       "cards": [
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_1",
+         "icon": "mdi:sofa",
+         "name": "Wohnzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_1",
+          "climate.wohnzimmer_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/wohnzimmer.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_1",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_1",
+            "icon": "💡",
+            "text": "Hauptlicht "
+           },
+           {
+            "entity": "climate.wohnzimmer_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        },
+        {
+         "entity": "light.schlafzimmer",
+         "icon": "mdi:bed-king",
+         "name": "Schlafzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.schlafzimmer",
+          "climate.schlafzimmer_new_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/obergeschoss",
+          "image": "/local/glass_island_v3/schlafzimmer.jpg",
+          "main_entity": "light.schlafzimmer",
+          "rows": [
+           {
+            "entity": "light.schlafzimmer",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "climate.schlafzimmer_new_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        },
+        {
+         "entity": "light.studio",
+         "icon": "mdi:monitor",
+         "name": "Studio",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.studio_pc1",
+          "climate.studio"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/studio.jpg",
+          "main_entity": "light.studio",
+          "rows": [
+           {
+            "entity": "light.studio_pc1",
+            "icon": "🖥",
+            "text": "PC 1 "
+           },
+           {
+            "entity": "climate.studio",
+            "icon": "❄",
+            "text": "Klima "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.shelly_1pm_mini_gen4_2",
+         "icon": "mdi:stairs-down",
+         "name": "Keller",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.shelly_1pm_mini_gen4_2",
+          "sensor.gefrierschrank_leistung"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/keller.jpg",
+          "main_entity": "switch.shelly_1pm_mini_gen4_2",
+          "rows": [
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "sensor.gefrierschrank_leistung",
+            "icon": "🧊",
+            "text": "Gefrierschrank "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      },
+      {
+       "name": "Energie (aktuell)",
+       "tap_action": {
+        "action": "navigate",
+        "navigation_path": "/design-h-klar/energie"
+       },
+       "template": "heading",
+       "type": "custom:button-card",
+       "label": "Power Flow ›"
+      },
+      {
+       "type": "custom:button-card",
+       "template": "glass",
+       "show_name": false,
+       "show_icon": false,
+       "show_label": false,
+       "triggers_update": [
+        "sensor.solarnet_leistung_verbrauch",
+        "sensor.power_photovoltaics",
+        "sensor.byd_battery_box_premium_hv_state_of_charge",
+        "sensor.openwb_chargepoint_1_ladeleistung",
+        "input_select.ev_lademodus"
+       ],
+       "tap_action": {
+        "action": "navigate",
+        "navigation_path": "/design-h-klar/energie"
+       },
+       "custom_fields": {
+        "a": "[[[ const e=states['sensor.solarnet_leistung_verbrauch']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:home\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#92c4ff\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Hausverbrauch</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
+        "b": "[[[ const e=states['sensor.power_photovoltaics']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:solar-power\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#f8ca78\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">PV</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
+        "c": "[[[ const e=states['sensor.byd_battery_box_premium_hv_state_of_charge']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:battery\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#84ebbe\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Speicher</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
+        "d": "[[[ const e=states['sensor.openwb_chargepoint_1_ladeleistung']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:ev-station\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#9ac0ff\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Wallbox</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div><div style=\"font-size:10px;opacity:.8;margin-top:2px\">Lademodus: '+(states['input_select.ev_lademodus']?states['input_select.ev_lademodus'].state:'—')+'</div>'; ]]]"
+       },
+       "styles": {
+        "card": [
+         {
+          "padding": "14px 4px"
+         },
+         {
+          "border-radius": "22px"
+         },
+         {
+          "box-shadow": "inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14)"
+         }
+        ],
+        "grid": [
+         {
+          "grid-template-areas": "\"a b c d\""
+         },
+         {
+          "grid-template-columns": "repeat(4,minmax(0,1fr))"
+         },
+         {
+          "grid-template-rows": "min-content"
+         }
+        ],
+        "custom_fields": {
+         "a": [
+          {
+           "text-align": "center"
+          },
+          {
+           "padding": "2px 0"
+          }
+         ],
+         "b": [
+          {
+           "text-align": "center"
+          },
+          {
+           "padding": "2px 0"
+          },
+          {
+           "border-left": "1px solid rgba(255,255,255,.14)"
+          }
+         ],
+         "c": [
+          {
+           "text-align": "center"
+          },
+          {
+           "padding": "2px 0"
+          },
+          {
+           "border-left": "1px solid rgba(255,255,255,.14)"
+          }
+         ],
+         "d": [
+          {
+           "text-align": "center"
+          },
+          {
+           "padding": "2px 0"
+          },
+          {
+           "border-left": "1px solid rgba(255,255,255,.14)"
+          }
+         ]
+        }
+       }
+      },
+      {
+       "show_icon": false,
+       "show_name": false,
+       "styles": {
+        "card": [
+         {
+          "height": "83px"
+         },
+         {
+          "background": "transparent"
+         },
+         {
+          "border": "none"
+         },
+         {
+          "box-shadow": "none"
+         }
+        ]
+       },
+       "tap_action": {
+        "action": "none"
+       },
+       "type": "custom:button-card"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Start",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:lightning-bolt",
+   "max_columns": 2,
+   "path": "energie",
+   "sections": [
+    {
+     "cards": [
+      {
+       "heading": "Energiefluss",
+       "icon": "mdi:transmission-tower",
+       "type": "heading"
+      },
+      {
+       "type": "custom:energiefluss-glas",
+       "grid_options": {
+        "columns": "full"
+       },
+       "card_mod": {
+        "style": "ha-card.glass {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%) !important;\n  -webkit-backdrop-filter: blur(24px) saturate(138%) !important;\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "EOS-Plan (nur Anzeige)",
+       "icon": "mdi:robot",
+       "type": "heading"
+      },
+      {
+       "entity": "sensor.solarnet_power_grid",
+       "icon": "mdi:transmission-tower",
+       "name": "Netz",
+       "template": "metric",
+       "type": "custom:button-card",
+       "variables": {
+        "tint": "#92bffb"
+       }
+      },
+      {
+       "entity": "sensor.power_photovoltaics",
+       "icon": "mdi:solar-power",
+       "name": "PV",
+       "template": "metric",
+       "type": "custom:button-card",
+       "variables": {
+        "tint": "#f8ca78"
+       }
+      },
+      {
+       "entity": "sensor.byd_battery_box_premium_hv_state_of_charge",
+       "icon": "mdi:battery",
+       "name": "Speicher",
+       "template": "metric",
+       "type": "custom:button-card",
+       "variables": {
+        "tint": "#94e8d4"
+       }
+      },
+      {
+       "entity": "sensor.electricity_price_wilhelm_busch_strasse_17",
+       "icon": "mdi:currency-eur",
+       "name": "Strompreis",
+       "template": "metric",
+       "type": "custom:button-card",
+       "variables": {
+        "tint": "#f2d19d"
+       }
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_genetic_ac_charge_factor",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Netzladen",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_genetic_discharge_allowed_factor",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Entladen erlaubt",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_grid_consumption_energy_wh",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Netzbezug (Wh)",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_costs_amt",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Kosten Stunde",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Verlauf",
+       "icon": "mdi:chart-line",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entities": [
+        {
+         "color": "orange",
+         "entity": "sensor.power_photovoltaics",
+         "name": "PV"
+        },
+        {
+         "color": "red",
+         "entity": "sensor.solarnet_power_grid",
+         "name": "Netz"
+        },
+        {
+         "color": "green",
+         "entity": "sensor.solarnet_power_battery",
+         "name": "Speicher"
+        }
+       ],
+       "grid_options": {
+        "columns": "full",
+        "rows": 6
+       },
+       "hours_to_show": 24,
+       "type": "history-graph"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entities": [
+        {
+         "color": "blue",
+         "entity": "sensor.electricity_price_wilhelm_busch_strasse_17",
+         "name": "Strompreis"
+        }
+       ],
+       "grid_options": {
+        "columns": "full",
+        "rows": 4
+       },
+       "hours_to_show": 24,
+       "type": "history-graph",
+       "visibility": [
+        {
+         "condition": "screen",
+         "media_query": "(min-width: 768px)"
+        }
+       ]
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Energie",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:car-electric-outline",
+   "max_columns": 2,
+   "path": "auto",
+   "sections": [
+    {
+     "cards": [
+      {
+       "heading": "E-Auto laden",
+       "icon": "mdi:ev-station",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "binary_sensor.openwb_chargepoint_1_ladekabel",
+       "name": "Ladekabel",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "input_select.ev_lademodus",
+       "features": [
+        {
+         "type": "select-options"
+        }
+       ],
+       "name": "Lademodus",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "automation.ev_laden_steuerung_openwb",
+       "name": "EV-Automation",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.ev_pv_uberschuss",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "PV-Überschuss",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.openwb_chargepoint_1_ladeleistung",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Ladeleistung",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "input_number.ev_max_strompreis",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Max. Strompreis",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.electricity_price_wilhelm_busch_strasse_17",
+       "name": "Aktueller Strompreis",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "EOS-Plan (nur Anzeige)",
+       "icon": "mdi:robot",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_genetic_ac_charge_factor",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Netzladen",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_genetic_discharge_allowed_factor",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Entladen erlaubt",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_grid_consumption_energy_wh",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Netzbezug (Wh)",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.eos_costs_amt",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Kosten Stunde",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Ladeprotokoll Firmenwagen",
+       "icon": "mdi:file-delimited"
+      },
+      {
+       "type": "tile",
+       "entity": "input_boolean.ev_ladeprotokoll_vorgang_aktiv",
+       "name": "Ladevorgang läuft",
+       "icon": "mdi:ev-station",
+       "tap_action": {
+        "action": "none"
+       },
+       "icon_tap_action": {
+        "action": "none"
+       },
+       "grid_options": {
+        "columns": 6
+       },
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "input_number.ev_ladeprotokoll_kosten",
+       "name": "Kosten laufender Vorgang",
+       "icon": "mdi:currency-eur",
+       "tap_action": {
+        "action": "none"
+       },
+       "grid_options": {
+        "columns": 6
+       },
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "custom:ladeprotokoll-export",
+       "grid_options": {
+        "columns": "full"
+       }
+      }
+     ]
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "E-Auto",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:view-grid-outline",
+   "max_columns": 2,
+   "path": "raeume",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Deine Räume",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_1",
+         "icon": "mdi:sofa",
+         "name": "Wohnzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_1",
+          "climate.wohnzimmer_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/wohnzimmer.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_1",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_1",
+            "icon": "💡",
+            "text": "Hauptlicht "
+           },
+           {
+            "entity": "climate.wohnzimmer_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        },
+        {
+         "entity": "light.schlafzimmer",
+         "icon": "mdi:bed-king",
+         "name": "Schlafzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.schlafzimmer",
+          "climate.schlafzimmer_new_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/obergeschoss",
+          "image": "/local/glass_island_v3/schlafzimmer.jpg",
+          "main_entity": "light.schlafzimmer",
+          "rows": [
+           {
+            "entity": "light.schlafzimmer",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "climate.schlafzimmer_new_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        },
+        {
+         "entity": "light.studio",
+         "icon": "mdi:monitor",
+         "name": "Studio",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.studio_pc1",
+          "climate.studio"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/studio.jpg",
+          "main_entity": "light.studio",
+          "rows": [
+           {
+            "entity": "light.studio_pc1",
+            "icon": "🖥",
+            "text": "PC 1 "
+           },
+           {
+            "entity": "climate.studio",
+            "icon": "❄",
+            "text": "Klima "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.shelly_1pm_mini_gen4_2",
+         "icon": "mdi:stairs-down",
+         "name": "Keller",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.shelly_1pm_mini_gen4_2",
+          "sensor.gefrierschrank_leistung"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/keller.jpg",
+          "main_entity": "switch.shelly_1pm_mini_gen4_2",
+          "rows": [
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "sensor.gefrierschrank_leistung",
+            "icon": "🧊",
+            "text": "Gefrierschrank "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      },
+      {
+       "cards": [
+        {
+         "icon": "mdi:home-floor-0",
+         "name": "Erdgeschoss",
+         "template": "quick",
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "tint": "#9fe7db"
+         }
+        },
+        {
+         "icon": "mdi:home-floor-1",
+         "name": "Obergeschoss",
+         "template": "quick",
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/obergeschoss",
+          "tint": "#cab7ff"
+         }
+        },
+        {
+         "icon": "mdi:stairs-down",
+         "name": "Keller",
+         "template": "quick",
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "tint": "#96c8fc"
+         }
+        },
+        {
+         "icon": "mdi:fan",
+         "name": "Klima",
+         "template": "quick",
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/klima",
+          "tint": "#8dd9f8"
+         }
+        }
+       ],
+       "columns": 4,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "name": "Außenbereich",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "switch.shelly_1pm_mini_gen4_3",
+         "icon": "mdi:door-open",
+         "name": "Flur",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.shelly_1pm_mini_gen4_3",
+          "switch.shelly_1pm_mini_gen4_4"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/flur.jpg",
+          "main_entity": "switch.shelly_1pm_mini_gen4_3",
+          "rows": [
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_3",
+            "icon": "💡",
+            "text": "EG-Licht "
+           },
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_4",
+            "icon": "💡",
+            "text": "OG-Licht "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "light.vorgarten",
+         "icon": "mdi:flower",
+         "name": "Garten",
+         "template": "picture_room",
+         "triggers_update": [],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/aussen",
+          "image": "/local/glass_island_v3/garten.jpg",
+          "main_entity": "light.vorgarten",
+          "rows": [
+           {
+            "icon": "🌿",
+            "text": "Außenbereich"
+           },
+           {
+            "icon": "↗",
+            "text": "Ansehen"
+           }
+          ]
+         }
+        },
+        {
+         "entity": "lock.home",
+         "icon": "mdi:door-closed-lock",
+         "name": "Vorgarten / Haustür",
+         "template": "picture_room",
+         "triggers_update": [
+          "lock.home",
+          "light.haustur_2"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/sicherheit",
+          "image": "/local/glass_island_v3/vorgarten_haustuer.jpg",
+          "main_entity": "lock.home",
+          "rows": [
+           {
+            "entity": "lock.home",
+            "icon": "🔐",
+            "text": "Schloss "
+           },
+           {
+            "entity": "light.haustur_2",
+            "icon": "💡",
+            "text": "Haustürlampe "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_2",
+         "icon": "mdi:balcony",
+         "name": "Terrasse",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_2",
+          "cover.eltako_esb64np_ipm"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/terrasse.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_2",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "cover.eltako_esb64np_ipm",
+            "icon": "▤",
+            "text": "Fenster "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.temp_wallbox_switch",
+         "icon": "mdi:car-port",
+         "name": "Carport",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.temp_wallbox_switch",
+          "binary_sensor.openwb_chargepoint_1_ladekabel"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/aussen",
+          "image": "/local/glass_island_v3/carport.jpg",
+          "main_entity": "switch.temp_wallbox_switch",
+          "rows": [
+           {
+            "entity": "switch.temp_wallbox_switch",
+            "icon": "🔌",
+            "text": "Steckdose "
+           },
+           {
+            "entity": "binary_sensor.openwb_chargepoint_1_ladekabel",
+            "icon": "🚗",
+            "text": "Kabel "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      },
+      {
+       "icon": "mdi:tree",
+       "name": "Außensteuerung",
+       "template": "quick",
+       "type": "custom:button-card",
+       "variables": {
+        "destination": "/design-h-klar/aussen",
+        "tint": "#91eccc"
+       }
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Räume",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:home-floor-0",
+   "max_columns": 2,
+   "path": "erdgeschoss",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Bereiche im Überblick",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_1",
+         "icon": "mdi:sofa",
+         "name": "Wohnzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_1",
+          "climate.wohnzimmer_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/wohnzimmer.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_1",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_1",
+            "icon": "💡",
+            "text": "Hauptlicht "
+           },
+           {
+            "entity": "climate.wohnzimmer_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.shelly_1pm_mini_gen4_3",
+         "icon": "mdi:door-open",
+         "name": "Flur",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.shelly_1pm_mini_gen4_3",
+          "switch.shelly_1pm_mini_gen4_4"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/flur.jpg",
+          "main_entity": "switch.shelly_1pm_mini_gen4_3",
+          "rows": [
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_3",
+            "icon": "💡",
+            "text": "EG-Licht "
+           },
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_4",
+            "icon": "💡",
+            "text": "OG-Licht "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_2",
+         "icon": "mdi:balcony",
+         "name": "Terrasse",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_2",
+          "cover.eltako_esb64np_ipm"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/terrasse.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_2",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "cover.eltako_esb64np_ipm",
+            "icon": "▤",
+            "text": "Fenster "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Wohnzimmer",
+       "icon": "mdi:sofa",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.nspanelwohnzimmer_relay_1",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:ceiling-light",
+       "name": "Hauptlicht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.wohnzimmer",
+       "features": [
+        {
+         "type": "light-brightness"
+        }
+       ],
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Licht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.hue_iris_1",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "TV links",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.wled_tv_2",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "TV-Beleuchtung",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Terrassenfenster",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm_2",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Terrassentür",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "media_player.lg_webos_tv_oled65g29la",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Fernseher",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.kamin",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:fireplace",
+       "name": "Kamin",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.wled_kamin",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:led-strip-variant",
+       "name": "Kamin-Beleuchtung",
+       "type": "tile"
+      },
+      {
+       "type": "custom:swipe-card",
+       "grid_options": {
+        "columns": 6
+       },
+       "parameters": {
+        "spaceBetween": 12
+       },
+       "cards": [
+        {
+         "type": "tile",
+         "entity": "climate.tado_smart_radiator_thermostat_va1519789568",
+         "name": "Heizung",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        },
+        {
+         "type": "tile",
+         "entity": "climate.wohnzimmer_mqtt_hvac",
+         "name": "Klima",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        }
+       ]
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Küche",
+       "icon": "mdi:countertop",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.led_strip_leuchte",
+       "features": [
+        {
+         "type": "light-brightness"
+        }
+       ],
+       "name": "LED-Strip",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va1620452864",
+       "name": "Heizung",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Flur",
+       "icon": "mdi:door",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.shelly_1pm_mini_gen4_3",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Licht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.shelly_1pm_mini_gen4",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:door-open",
+       "name": "Tür",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va1133913600",
+       "name": "Heizung",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Terrasse",
+       "icon": "mdi:balcony",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.nspanelwohnzimmer_relay_2",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Licht",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Erdgeschoss",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:home-floor-1",
+   "max_columns": 2,
+   "path": "obergeschoss",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Bereiche im Überblick",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "light.schlafzimmer",
+         "icon": "mdi:bed-king",
+         "name": "Schlafzimmer",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.schlafzimmer",
+          "climate.schlafzimmer_new_mqtt_hvac"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/obergeschoss",
+          "image": "/local/glass_island_v3/schlafzimmer.jpg",
+          "main_entity": "light.schlafzimmer",
+          "rows": [
+           {
+            "entity": "light.schlafzimmer",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "climate.schlafzimmer_new_mqtt_hvac",
+            "icon": "🌡",
+            "text": ""
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Schlafzimmer",
+       "icon": "mdi:bed",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.eltako_esr64pf_ipm",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:ceiling-light",
+       "name": "Hauptlicht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.schlafzimmer",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Licht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm_4",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Rollladen",
+       "type": "tile"
+      },
+      {
+       "type": "custom:swipe-card",
+       "grid_options": {
+        "columns": 6
+       },
+       "parameters": {
+        "spaceBetween": 12
+       },
+       "cards": [
+        {
+         "type": "tile",
+         "entity": "climate.tado_smart_radiator_thermostat_va3225298176",
+         "name": "Heizung",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        },
+        {
+         "type": "tile",
+         "entity": "climate.schlafzimmer_new_mqtt_hvac",
+         "name": "Klima",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        }
+       ]
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Badezimmer",
+       "icon": "mdi:shower",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm_3",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "name": "Rollladen",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2833982976",
+       "name": "Heizung",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Ankleidezimmer",
+       "icon": "mdi:hanger",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.h70b3",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "LED-Vorhang",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm_5",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Rollladen",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2534614272",
+       "name": "Heizung",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Gästezimmer",
+       "icon": "mdi:bed-double",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "cover.eltako_esb64np_ipm_6",
+       "features": [
+        {
+         "type": "cover-open-close"
+        }
+       ],
+       "name": "Rollladen",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2148673024",
+       "name": "Heizung",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Flur",
+       "icon": "mdi:door",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.shelly_1pm_mini_gen4_4",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Licht",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Obergeschoss",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:home-floor-negative-1",
+   "max_columns": 2,
+   "path": "keller",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Bereiche im Überblick",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "light.studio",
+         "icon": "mdi:monitor",
+         "name": "Studio",
+         "template": "picture_room",
+         "triggers_update": [
+          "light.studio_pc1",
+          "climate.studio"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/studio.jpg",
+          "main_entity": "light.studio",
+          "rows": [
+           {
+            "entity": "light.studio_pc1",
+            "icon": "🖥",
+            "text": "PC 1 "
+           },
+           {
+            "entity": "climate.studio",
+            "icon": "❄",
+            "text": "Klima "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.shelly_1pm_mini_gen4_2",
+         "icon": "mdi:stairs-down",
+         "name": "Keller",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.shelly_1pm_mini_gen4_2",
+          "sensor.gefrierschrank_leistung"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/keller",
+          "image": "/local/glass_island_v3/keller.jpg",
+          "main_entity": "switch.shelly_1pm_mini_gen4_2",
+          "rows": [
+           {
+            "entity": "switch.shelly_1pm_mini_gen4_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "sensor.gefrierschrank_leistung",
+            "icon": "🧊",
+            "text": "Gefrierschrank "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Studio",
+       "icon": "mdi:desktop-tower-monitor",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.studio",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:light-switch",
+       "name": "Schalter",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.studio",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Licht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.studio_pc1",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "PC 1",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.studio_pc2",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "PC 2",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.aeotec_led_strip",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "LED-PC",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.led_tv_2",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "LED-TV",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "climate.studio",
+       "grid_options": {
+        "columns": 6
+       },
+       "name": "Klima",
+       "type": "tile"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.studio",
+       "name": "Klima",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Keller",
+       "icon": "mdi:stairs-down",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.shelly_1pm_mini_gen4_2",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Licht",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Waschküche",
+       "icon": "mdi:washing-machine",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.waschmaschine_leistungsaufnahme",
+       "features": [
+        {
+         "hours_to_show": 4,
+         "type": "trend-graph"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       },
+       "icon": "mdi:washing-machine",
+       "name": "Waschmaschine",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.trockner_leistung",
+       "features": [
+        {
+         "hours_to_show": 4,
+         "type": "trend-graph"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       },
+       "icon": "mdi:tumble-dryer",
+       "name": "Trockner",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "sensor.gefrierschrank_leistung",
+       "grid_options": {
+        "columns": 12
+       },
+       "icon": "mdi:fridge",
+       "name": "Gefrierschrank",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Tiefkeller",
+       "icon": "mdi:water-percent",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.luftentfeuchter",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:air-humidifier",
+       "name": "Luftentfeuchter",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Keller",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:tree",
+   "max_columns": 2,
+   "path": "aussen",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Außenbereiche",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "light.vorgarten",
+         "icon": "mdi:flower",
+         "name": "Garten",
+         "template": "picture_room",
+         "triggers_update": [],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/aussen",
+          "image": "/local/glass_island_v3/garten.jpg",
+          "main_entity": "light.vorgarten",
+          "rows": [
+           {
+            "icon": "🌿",
+            "text": "Außenbereich"
+           },
+           {
+            "icon": "↗",
+            "text": "Ansehen"
+           }
+          ]
+         }
+        },
+        {
+         "entity": "lock.home",
+         "icon": "mdi:door-closed-lock",
+         "name": "Vorgarten / Haustür",
+         "template": "picture_room",
+         "triggers_update": [
+          "lock.home",
+          "light.haustur_2"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/sicherheit",
+          "image": "/local/glass_island_v3/vorgarten_haustuer.jpg",
+          "main_entity": "lock.home",
+          "rows": [
+           {
+            "entity": "lock.home",
+            "icon": "🔐",
+            "text": "Schloss "
+           },
+           {
+            "entity": "light.haustur_2",
+            "icon": "💡",
+            "text": "Haustürlampe "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.nspanelwohnzimmer_relay_2",
+         "icon": "mdi:balcony",
+         "name": "Terrasse",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.nspanelwohnzimmer_relay_2",
+          "cover.eltako_esb64np_ipm"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/erdgeschoss",
+          "image": "/local/glass_island_v3/terrasse.jpg",
+          "main_entity": "switch.nspanelwohnzimmer_relay_2",
+          "rows": [
+           {
+            "entity": "switch.nspanelwohnzimmer_relay_2",
+            "icon": "💡",
+            "text": "Licht "
+           },
+           {
+            "entity": "cover.eltako_esb64np_ipm",
+            "icon": "▤",
+            "text": "Fenster "
+           }
+          ]
+         }
+        },
+        {
+         "entity": "switch.temp_wallbox_switch",
+         "icon": "mdi:car-port",
+         "name": "Carport",
+         "template": "picture_room",
+         "triggers_update": [
+          "switch.temp_wallbox_switch",
+          "binary_sensor.openwb_chargepoint_1_ladekabel"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/aussen",
+          "image": "/local/glass_island_v3/carport.jpg",
+          "main_entity": "switch.temp_wallbox_switch",
+          "rows": [
+           {
+            "entity": "switch.temp_wallbox_switch",
+            "icon": "🔌",
+            "text": "Steckdose "
+           },
+           {
+            "entity": "binary_sensor.openwb_chargepoint_1_ladekabel",
+            "icon": "🚗",
+            "text": "Kabel "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Vorgarten",
+       "icon": "mdi:flower",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.vorgarten",
+       "name": "Licht",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.haustur_2",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Haustür-Lampe",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.homee_358_switch_1105",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:lightbulb",
+       "name": "Licht Haustür",
+       "type": "tile"
+      },
+      {
+       "camera_view": "auto",
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "camera.vorgarten_2",
+       "show_name": false,
+       "show_state": false,
+       "type": "picture-entity"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Carport",
+       "icon": "mdi:car-port",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "switch.temp_wallbox_switch",
+       "grid_options": {
+        "columns": 6
+       },
+       "icon": "mdi:ev-plug-type2",
+       "name": "Steckdose Wallbox",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Außen",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:thermostat",
+   "max_columns": 2,
+   "path": "klima",
+   "sections": [
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Heizkörper Übersicht",
+       "icon": "mdi:radiator"
+      },
+      {
+       "type": "custom:button-card",
+       "template": "glass",
+       "show_name": false,
+       "show_icon": false,
+       "show_label": false,
+       "triggers_update": [
+        "climate.tado_smart_radiator_thermostat_va1519789568",
+        "sensor.tado_smart_radiator_thermostat_va1519789568_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va1519789568_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va1620452864",
+        "sensor.tado_smart_radiator_thermostat_va1620452864_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va1620452864_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va1133913600",
+        "sensor.tado_smart_radiator_thermostat_va1133913600_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va1133913600_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va3225298176",
+        "sensor.tado_smart_radiator_thermostat_va3225298176_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va3225298176_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va2833982976",
+        "sensor.tado_smart_radiator_thermostat_va2833982976_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va2833982976_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va2534614272",
+        "sensor.tado_smart_radiator_thermostat_va2534614272_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va2534614272_current_humidity",
+        "climate.tado_smart_radiator_thermostat_va2148673024",
+        "sensor.tado_smart_radiator_thermostat_va2148673024_current_temperature",
+        "sensor.tado_smart_radiator_thermostat_va2148673024_current_humidity"
+       ],
+       "custom_fields": {
+        "list": "[[[ const rooms=[['Wohnzimmer','1519789568'],['Küche','1620452864'],['Flur','1133913600'],['Schlafzimmer','3225298176'],['Badezimmer','2833982976'],['Ankleidezimmer','2534614272'],['Gästezimmer','2148673024'],]; const row='display:grid;grid-template-columns:1.5fr .9fr .9fr .9fr;align-items:center;padding:7px 4px;'; let h='<div style=\"'+row+'font-size:11px;opacity:.7\"><div>Raum</div><div>Ist</div><div>Soll</div><div>Feuchte</div></div>'; rooms.forEach(r=>{const c=states['climate.tado_smart_radiator_thermostat_va'+r[1]]; const t=states['sensor.tado_smart_radiator_thermostat_va'+r[1]+'_current_temperature']; const hu=states['sensor.tado_smart_radiator_thermostat_va'+r[1]+'_current_humidity']; const tv=t?parseFloat(t.state):NaN; const tg=c&&c.attributes.temperature!=null?c.attributes.temperature:null; const heat=c&&c.attributes.hvac_action==='heating'; const col=isNaN(tv)?'#d7e4f3':(tv<18?'#8fd6ff':(tv<=22?'#9ae8c4':'#ffb37a')); h+='<div style=\"'+row+'border-top:1px solid rgba(255,255,255,.12)\"><div style=\"font-size:14px;font-weight:600\">'+(heat?'<span style=\"color:#ff9a5a\">●</span> ':'')+r[0]+'</div><div style=\"font-size:16px;font-weight:800;color:'+col+'\">'+(isNaN(tv)?'—':tv.toLocaleString('de-DE',{maximumFractionDigits:1})+' °C')+'</div><div style=\"font-size:14px\">'+(tg==null?'—':String(tg).replace('.',',')+' °C')+'</div><div style=\"font-size:14px;opacity:.85\">'+(hu&&!isNaN(parseFloat(hu.state))?Math.round(parseFloat(hu.state))+' %':'—')+'</div></div>';}); return h; ]]]"
+       },
+       "styles": {
+        "card": [
+         {
+          "padding": "10px 14px"
+         },
+         {
+          "border-radius": "22px"
+         }
+        ],
+        "grid": [
+         {
+          "grid-template-areas": "\"list\""
+         },
+         {
+          "grid-template-columns": "1fr"
+         }
+        ],
+        "custom_fields": {
+         "list": [
+          {
+           "grid-area": "list"
+          },
+          {
+           "text-align": "left"
+          },
+          {
+           "width": "100%"
+          }
+         ]
+        }
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Wohnzimmer",
+       "icon": "mdi:sofa"
+      },
+      {
+       "type": "custom:swipe-card",
+       "grid_options": {
+        "columns": 6
+       },
+       "parameters": {
+        "spaceBetween": 12
+       },
+       "cards": [
+        {
+         "type": "tile",
+         "entity": "climate.tado_smart_radiator_thermostat_va1519789568",
+         "name": "Heizung",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        },
+        {
+         "type": "tile",
+         "entity": "climate.wohnzimmer_mqtt_hvac",
+         "name": "Klima",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Schlafzimmer",
+       "icon": "mdi:bed"
+      },
+      {
+       "type": "custom:swipe-card",
+       "grid_options": {
+        "columns": 6
+       },
+       "parameters": {
+        "spaceBetween": 12
+       },
+       "cards": [
+        {
+         "type": "tile",
+         "entity": "climate.tado_smart_radiator_thermostat_va3225298176",
+         "name": "Heizung",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        },
+        {
+         "type": "tile",
+         "entity": "climate.schlafzimmer_new_mqtt_hvac",
+         "name": "Klima",
+         "features": [
+          {
+           "type": "climate-hvac-modes",
+           "style": "icons"
+          },
+          {
+           "type": "target-temperature"
+          }
+         ],
+         "state_content": [
+          "hvac_action",
+          "current_temperature",
+          "current_humidity"
+         ],
+         "card_mod": {
+          "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Studio",
+       "icon": "mdi:desktop-tower-monitor"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.studio",
+       "name": "Klima",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "grid_options": {
+        "columns": 6
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Außengerät Klimaanlage",
+       "icon": "mdi:air-conditioner"
+      },
+      {
+       "type": "heading",
+       "heading": "Leistungsbegrenzung gilt für alle Innengeräte (auch Einliegerwohnung)",
+       "heading_style": "subtitle"
+      },
+      {
+       "type": "tile",
+       "entity": "select.wohnzimmer_demand_control",
+       "name": "Leistungsbegrenzung (Demand Control)",
+       "icon": "mdi:speedometer",
+       "features": [
+        {
+         "type": "select-options"
+        }
+       ],
+       "grid_options": {
+        "columns": 12
+       },
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "sensor.ac_aussen_power",
+       "name": "Leistung Außengerät",
+       "icon": "mdi:flash",
+       "grid_options": {
+        "columns": 12
+       },
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      }
+     ]
+    },
+    {
+     "type": "grid",
+     "cards": [
+      {
+       "type": "heading",
+       "heading": "Weitere Heizkörper",
+       "icon": "mdi:radiator"
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va1133913600",
+       "name": "Flur",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va1620452864",
+       "name": "Küche",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2833982976",
+       "name": "Badezimmer",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2534614272",
+       "name": "Ankleidezimmer",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      },
+      {
+       "type": "tile",
+       "entity": "climate.tado_smart_radiator_thermostat_va2148673024",
+       "name": "Gästezimmer",
+       "features": [
+        {
+         "type": "climate-hvac-modes",
+         "style": "icons"
+        },
+        {
+         "type": "target-temperature"
+        }
+       ],
+       "state_content": [
+        "hvac_action",
+        "current_temperature",
+        "current_humidity"
+       ],
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       }
+      }
+     ]
+    },
+    {
+     "cards": [
+      {
+       "heading": "Heizung",
+       "icon": "mdi:radiator",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "climate.vplusho1_4_heating",
+       "name": "Heizung",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "water_heater.vplusho1_4_water",
+       "name": "Warmwasser",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Klima",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": true
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": false
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  },
+  {
+   "icon": "mdi:shield-home",
+   "max_columns": 2,
+   "path": "sicherheit",
+   "sections": [
+    {
+     "cards": [
+      {
+       "name": "Bereiche im Überblick",
+       "template": "heading",
+       "type": "custom:button-card"
+      },
+      {
+       "cards": [
+        {
+         "entity": "lock.home",
+         "icon": "mdi:door-closed-lock",
+         "name": "Vorgarten / Haustür",
+         "template": "picture_room",
+         "triggers_update": [
+          "lock.home",
+          "light.haustur_2"
+         ],
+         "type": "custom:button-card",
+         "variables": {
+          "destination": "/design-h-klar/sicherheit",
+          "image": "/local/glass_island_v3/vorgarten_haustuer.jpg",
+          "main_entity": "lock.home",
+          "rows": [
+           {
+            "entity": "lock.home",
+            "icon": "🔐",
+            "text": "Schloss "
+           },
+           {
+            "entity": "light.haustur_2",
+            "icon": "💡",
+            "text": "Haustürlampe "
+           }
+          ]
+         }
+        }
+       ],
+       "columns": 2,
+       "square": false,
+       "type": "grid"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Alarm & Schloss",
+       "icon": "mdi:shield-home",
+       "type": "heading"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "alarm_control_panel.coruscant_20_status",
+       "features": [
+        {
+         "type": "alarm-modes"
+        }
+       ],
+       "name": "Alarm",
+       "type": "tile"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "lock.home",
+       "name": "Haustür",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    },
+    {
+     "cards": [
+      {
+       "heading": "Kameras",
+       "icon": "mdi:cctv",
+       "type": "heading"
+      },
+      {
+       "camera_view": "auto",
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "camera.vorgarten_2",
+       "name": "Vorgarten",
+       "show_state": false,
+       "type": "picture-entity"
+      },
+      {
+       "card_mod": {
+        "style": "ha-card {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%);\n  -webkit-backdrop-filter: blur(24px) saturate(138%);\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  color: #f7f9ff !important;\n  --primary-text-color: #f7f9ff;\n  --secondary-text-color: #d0e0ed;\n  --state-icon-color: #a4e7ec;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "entity": "light.cx810_scheinwerfer",
+       "name": "Flutlicht",
+       "type": "tile"
+      }
+     ],
+     "type": "grid"
+    }
+   ],
+   "theme": "GI Transparenz",
+   "title": "Sicherheit",
+   "type": "sections",
+   "footer": {
+    "max_width": 630,
+    "card": {
+     "type": "custom:mod-card",
+     "card": {
+      "type": "horizontal-stack",
+      "cards": [
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Start",
+        "icon": "mdi:home-variant",
+        "variables": {
+         "destination": "/design-h-klar/start",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Energie",
+        "icon": "mdi:lightning-bolt",
+        "variables": {
+         "destination": "/design-h-klar/energie",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "E-Auto",
+        "icon": "mdi:car-electric-outline",
+        "variables": {
+         "destination": "/design-h-klar/auto",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Räume",
+        "icon": "mdi:view-grid-outline",
+        "variables": {
+         "destination": "/design-h-klar/raeume",
+         "active": false
+        }
+       },
+       {
+        "type": "custom:button-card",
+        "template": "nav",
+        "name": "Sicherheit",
+        "icon": "mdi:shield-home",
+        "variables": {
+         "destination": "/design-h-klar/sicherheit",
+         "active": true
+        }
+       }
+      ]
+     },
+     "card_mod": {
+      "style": "ha-card {\n  position: fixed !important;\n  left: 50% !important;\n  bottom: calc(4px + env(safe-area-inset-bottom, 0px) * 0.35) !important;\n  transform: translateX(-50%) !important;\n  width: min(600px, calc(100vw - 28px)) !important;\n  z-index: 100 !important;\n  padding: 4px 6px !important;\n  border: 1px solid rgba(235,245,255,.44) !important;\n  border-radius: 31px !important;\n  background: linear-gradient(130deg,rgba(23,34,53,calc(.58 * var(--gi-k,1))),rgba(23,32,50,calc(.42 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(28px) saturate(145%) !important;\n  -webkit-backdrop-filter: blur(28px) saturate(145%) !important;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,.26),0 15px 35px rgba(0,0,0,.42) !important;\n}\n"
+     }
+    }
+   }
+  }
+ ]
+}

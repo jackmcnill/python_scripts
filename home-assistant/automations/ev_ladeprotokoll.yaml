@@ -1,0 +1,125 @@
+# Export aus Home Assistant (automations.yaml), id 1792402651080
+- id: '1792402651080'
+  alias: EV Ladeprotokoll (Firmenwagen)
+  description: >-
+    Protokolliert jeden Ladevorgang des Firmenwagens: Start, Ende, geladene kWh,
+    Kosten (Tibber-Preis x kWh, Netz und PV gleich bewertet) und Zählerstände.
+    Ein Vorgang beginnt, sobald die Ladeleistung die Schwelle überschreitet, und
+    endet nach der eingestellten Pause ohne Ladung oder beim Abstecken. Beim Ende
+    wird ein Eintrag im Kalender 'Ladeprotokoll Firmenwagen' angelegt (Quelle für
+    den CSV-Export). Läuft unabhängig von der Lade-Steuerung.
+  triggers:
+  - entity_id: sensor.openwb_chargepoint_1_geladene_energie_gesamt
+    id: energy
+    trigger: state
+  - id: tick
+    minutes: /1
+    trigger: time_pattern
+  - entity_id: binary_sensor.openwb_chargepoint_1_ladekabel
+    id: unplug
+    to: 'off'
+    trigger: state
+  conditions: []
+  actions:
+  - variables:
+      cnt: '{{ states(''sensor.openwb_chargepoint_1_geladene_energie_gesamt'') | float(0) }}'
+      delta: '{{ (trigger.to_state.state | float(0) - trigger.from_state.state | float(0)) if trigger.id == ''energy'' and trigger.from_state is not none and trigger.from_state.state | is_number and trigger.to_state.state | is_number else 0 }}'
+      gap: '{{ states(''input_number.ev_ladeprotokoll_pause_bis_ende'') | float(30) }}'
+      power: '{{ states(''sensor.openwb_chargepoint_1_ladeleistung'') | float(0) }}'
+      price: '{{ states(''sensor.electricity_price_wilhelm_busch_strasse_17'') | float(0) }}'
+      thr: '{{ states(''input_number.ev_ladeprotokoll_schwelle_ladeleistung'') | float(100) }}'
+  - choose:
+    - alias: 'Zähler hat sich erhöht: Vorgang starten oder fortschreiben'
+      conditions:
+      - condition: trigger
+        id: energy
+      - condition: template
+        value_template: '{{ delta > 0 and delta < 1 }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.ev_ladeprotokoll_vorgang_aktiv
+            state: 'on'
+          sequence:
+          - action: input_number.set_value
+            data:
+              value: '{{ [states(''input_number.ev_ladeprotokoll_kosten'') | float(0) + delta * price, 100000] | min }}'
+            target:
+              entity_id: input_number.ev_ladeprotokoll_kosten
+          - if:
+            - condition: template
+              value_template: '{{ power > thr }}'
+            then:
+            - action: input_datetime.set_datetime
+              data:
+                datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+              target:
+                entity_id: input_datetime.ev_ladeprotokoll_letzte_ladung
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.ev_ladeprotokoll_vorgang_aktiv
+            state: 'off'
+          - condition: template
+            value_template: '{{ power > thr }}'
+          sequence:
+          - action: input_number.set_value
+            data:
+              value: '{{ trigger.from_state.state | float(0) }}'
+            target:
+              entity_id: input_number.ev_ladeprotokoll_zahlerstand_start
+          - action: input_number.set_value
+            data:
+              value: '{{ delta * price }}'
+            target:
+              entity_id: input_number.ev_ladeprotokoll_kosten
+          - action: input_datetime.set_datetime
+            data:
+              datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+            target:
+              entity_id: input_datetime.ev_ladeprotokoll_start
+          - action: input_datetime.set_datetime
+            data:
+              datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+            target:
+              entity_id: input_datetime.ev_ladeprotokoll_letzte_ladung
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.ev_ladeprotokoll_vorgang_aktiv
+    - alias: 'Vorgang beenden: abgesteckt oder Pause überschritten'
+      conditions:
+      - condition: trigger
+        id:
+        - tick
+        - unplug
+      - condition: state
+        entity_id: input_boolean.ev_ladeprotokoll_vorgang_aktiv
+        state: 'on'
+      - condition: template
+        value_template: '{{ trigger.id == ''unplug'' or (as_timestamp(now()) - as_timestamp(states(''input_datetime.ev_ladeprotokoll_letzte_ladung''))) > gap * 60 }}'
+      sequence:
+      - variables:
+          cost: '{{ states(''input_number.ev_ladeprotokoll_kosten'') | float(0) }}'
+          kwh: '{{ [cnt - states(''input_number.ev_ladeprotokoll_zahlerstand_start'') | float(0), 0] | max }}'
+          t_end_raw: '{{ as_timestamp(states(''input_datetime.ev_ladeprotokoll_letzte_ladung'')) }}'
+          t_start: '{{ as_timestamp(states(''input_datetime.ev_ladeprotokoll_start'')) }}'
+          zs: '{{ states(''input_number.ev_ladeprotokoll_zahlerstand_start'') | float(0) }}'
+      - variables:
+          t_end: '{{ t_end_raw if t_end_raw > t_start + 60 else t_start + 60 }}'
+      - if:
+        - condition: template
+          value_template: '{{ kwh >= 0.05 }}'
+        then:
+        - action: calendar.create_event
+          data:
+            description: kWh={{ '%.3f' | format(kwh) }};Kosten={{ '%.4f' | format(cost) }};Preis={{ '%.4f' | format(cost / kwh) }};ZaehlerStart={{ '%.3f' | format(zs) }};ZaehlerEnde={{ '%.3f' | format(zs + kwh) }};Fahrzeug=Tavascan;Modus={{ states('input_select.ev_lademodus') }}
+            end_date_time: '{{ t_end | timestamp_custom(''%Y-%m-%d %H:%M:%S'') }}'
+            start_date_time: '{{ t_start | timestamp_custom(''%Y-%m-%d %H:%M:%S'') }}'
+            summary: Laden {{ '%.2f' | format(kwh) | replace('.', ',') }} kWh · {{ '%.2f' | format(cost) | replace('.', ',') }} €
+          target:
+            entity_id: calendar.ladeprotokoll_firmenwagen
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ev_ladeprotokoll_vorgang_aktiv
+  max: 10
+  mode: queued
