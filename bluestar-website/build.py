@@ -30,14 +30,23 @@ def cards(items):
     return '<div class="grid">' + "".join(
         f'<div class="card">{icon(i)}<h3>{t}</h3><p>{p}</p></div>' for i, t, p in items) + "</div>"
 
+def photos(items):
+    return '<div class="grid photos">' + "".join(
+        f'<figure class="photo"><img src="assets/{img}" alt="{alt}" width="424" height="283" loading="lazy"><figcaption><h3>{t}</h3><p>{p}</p></figcaption></figure>'
+        for img, alt, t, p in items) + "</div>"
+
+def split(img, alt, h, text, flip=False):
+    return (f'<section><div class="wrap split{" flip" if flip else ""}"><img src="assets/{img}" alt="{alt}" width="424" height="283" loading="lazy">'
+            f'<div><h2>{h}</h2>{text}</div></div></section>')
+
 def page(fname, title, desc, body, hero=None):
     nav = "".join(f'<li><a href="{h}"{" aria-current=page" if h == fname else ""}>{n}</a></li>' for h, n in NAV)
     return f"""<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title} – BlueStar Direct</title><meta name="description" content="{desc}">
-<link rel="stylesheet" href="assets/style.css"></head><body>
+<link rel="icon" href="assets/cropped-fav-192x192.png"><link rel="stylesheet" href="assets/style.css"></head><body>
 <a class="skip" href="#main">Zum Inhalt springen</a>
-<header class="site"><div class="wrap"><a class="logo" href="index.html">{LOGO}BlueStar Direct</a>
+<header class="site"><div class="wrap"><a class="logo" href="index.html"><img src="assets/logo-1.png" alt="BlueStar Direct" width="500" height="169"></a>
 <button class="burger" aria-expanded="false" aria-controls="nav" onclick="var n=document.getElementById('nav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">Menü</button>
 <nav id="nav" aria-label="Hauptmenü"><ul>{nav}</ul></nav></div></header>
 <main id="main">{hero or ""}{body}</main>
@@ -59,19 +68,19 @@ f"""<section><div class="wrap"><h2>Online-Marketing, das ankommt</h2>
 ("up","Sales und Leads steigern","Messbare Ergebnisse statt Streuverluste.")])}</div></section>
 <section class="alt"><div class="wrap"><h2>Erfolgreiches E-Mail-Marketing mit der BlueStar Direct Marketing GmbH</h2>
 <p class="lead">Wir setzen auf Qualität statt auf günstige Anbieter aus dem Ausland mit riesigen, unsauberen Datenbanken.</p>
-{cards([("chart","Analysen und Trends","Wir werten Kampagnen aus und leiten daraus Empfehlungen ab."),
-("up","Mehr Umsatz","Direkte Ansprache, die Verkäufe auslöst."),
-("handshake","Neue Kunden","Erreichen Sie neue Interessenten in Deutschland, Österreich und der Schweiz."),
-("mail","Produkte einführen","Neue Produkte gezielt und schnell im Markt platzieren.")])}</div></section>
+{photos([("trends.jpg","Auswertung von Kampagnendaten","Analysen und Trends","Wir werten Kampagnen aus und leiten daraus Empfehlungen ab."),
+("umsatz.jpg","Handschlag nach Geschäftsabschluss","Mehr Umsatz","Direkte Ansprache, die Verkäufe auslöst."),
+("neukunden.jpg","Lächelnde Frau mit Smartphone","Neue Kunden","Erreichen Sie neue Interessenten in Deutschland, Österreich und der Schweiz."),
+("produkt.jpg","Einkaufswagen mit Paketen vor einem Laptop","Produkte einführen","Neue Produkte gezielt und schnell im Markt platzieren.")])}</div></section>
 <section><div class="wrap"><h2>Weshalb Sie sich für BlueStar Direct entscheiden sollten</h2>
 {cards([("shield","Rechtssicher","Wir halten die gesetzlichen Vorgaben ein. Sämtliche Empfänger haben ihre Anmeldung per Double-Opt-In bestätigt."),
 ("target","Hohe Qualität","Ein großer, gepflegter Empfängerpool statt anonymer Massenlisten."),
 ("handshake","Persönlich","Feste Ansprechpartner und individuelle Lösungen.")])}</div></section>{CTA}""",
-hero='<div class="hero"><div class="wrap"><h1>Willkommen bei BlueStar Direct</h1><p>Ihre E-Mail-Marketing-Agentur aus Dresden: persönlich, transparent und erfolgsorientiert.</p><a class="btn" href="kontakt.html">Angebot anfragen</a></div></div>')
+hero='<div class="hero"><div class="wrap herogrid"><div><h1>Willkommen bei BlueStar Direct</h1><p>Ihre E-Mail-Marketing-Agentur aus Dresden: persönlich, transparent und erfolgsorientiert.</p><a class="btn" href="kontakt.html">Angebot anfragen</a></div><img src="assets/top3.jpg" alt="Junge Frau freut sich über eine Nachricht auf dem Smartphone" width="1080" height="350"></div></div>')
 
 pages["ueber-uns.html"] = page("ueber-uns.html", "Über uns", "Die BlueStar Direct Marketing GmbH – E-Mail-Marketing-Agentur in Dresden.",
-f"""<section><div class="wrap prose"><h2>Eine Datenbank, viele Möglichkeiten</h2>
-<p>Wir verfügen über eine große Datenbank an Interessenten in Deutschland, der Schweiz und Österreich. Empfänger lassen sich nach Kriterien wie Alter, Wohnort und Produktinteressen auswählen.</p>
+f"""{split("neukunden.jpg","Lächelnde Frau mit Smartphone","Eine Datenbank, viele Möglichkeiten","<p>Wir verfügen über eine große Datenbank an Interessenten in Deutschland, der Schweiz und Österreich. Empfänger lassen sich nach Kriterien wie Alter, Wohnort und Produktinteressen auswählen.</p>")}
+<section><div class="wrap prose">
 <h2>Warum E-Mail-Marketing?</h2><ul><li>Funktioniert auf allen Endgeräten</li><li>Erreicht Empfänger direkt</li><li>Ergebnisse sind schnell messbar</li><li>A/B-Splittests für Betreffzeilen und Werbemittel</li></ul>
 <h2>Was wir nicht bewerben</h2><p>Wir nehmen keine Werbung für bestimmte Branchen an, zum Beispiel Datingportale, alkoholische Getränke oder Astrologie-Angebote.</p></div></section>
 <section class="alt"><div class="wrap prose"><h2>Häufige Fragen</h2>
@@ -85,9 +94,9 @@ f"""<section><div class="wrap"><p class="lead">Kundenzufriedenheit und eine vert
 <h2 style="margin-top:32px">Kernkompetenzen</h2>
 {cards([("mail","E-Mail-Marketing","Unser Spezialgebiet: Newsletter-Kampagnen, die Zielgruppen ansprechen und Umsätze steigern."),
 ("target","Lead- und Adressgenerierung","Auf Wunsch gewinnen wir Leads und Adressen über ein Netzwerk reichweitenstarker Content-Webseiten.")])}</div></section>
-<section class="alt"><div class="wrap"><h2>Direkte und persönliche Ansprache</h2>
-<ul class="prose"><li>Auswahl der Zielgruppe nach Ihren Vorgaben oder mit unseren Tools</li><li>Beratung – die Entscheidung liegt bei Ihnen</li><li>Unterstützung bei der Erstellung der Werbemittel</li><li>Prüfung der Zustellbarkeit</li><li>Kontrolle der Werbemittel auf gängige Spamfilter</li></ul>
-<h2 style="margin-top:36px">Worauf wir Wert legen</h2><p class="lead">Partnerschaftliche Zusammenarbeit ist der Schlüssel zum gemeinsamen Erfolg – mit Flexibilität, Transparenz und Verlässlichkeit.</p>
+{split("trends.jpg","Auswertung von Kampagnendaten","Direkte und persönliche Ansprache","<ul><li>Auswahl der Zielgruppe nach Ihren Vorgaben oder mit unseren Tools</li><li>Beratung – die Entscheidung liegt bei Ihnen</li><li>Unterstützung bei der Erstellung der Werbemittel</li><li>Prüfung der Zustellbarkeit</li><li>Kontrolle der Werbemittel auf gängige Spamfilter</li></ul>",True)}
+<section class="alt"><div class="wrap">
+<h2>Worauf wir Wert legen</h2><p class="lead">Partnerschaftliche Zusammenarbeit ist der Schlüssel zum gemeinsamen Erfolg – mit Flexibilität, Transparenz und Verlässlichkeit.</p>
 {cards([("target","Effektiv und simpel","Effektive Lösungen für Ihr Direktmarketing."),("clock","Flexibel und schnell","Auch kurzfristige Aktionen sind möglich."),
 ("euro","Transparent und fair","Faire Preise, nachvollziehbare Abwicklung, Reporting."),("handshake","Starke Partnerschaften","Ein großes Netzwerk leistungsstarker Partner.")])}</div></section>{CTA}""",
 hero=phero("Leistungen", "Von der Zielgruppenauswahl bis zum Reporting."))
@@ -95,7 +104,8 @@ hero=phero("Leistungen", "Von der Zielgruppenauswahl bis zum Reporting."))
 pages["emailmarketing.html"] = page("emailmarketing.html", "E-Mail-Marketing", "Warum professionelles E-Mail-Marketing richtig ist: schnell, günstig, messbar.",
 f"""<section><div class="wrap"><h2>Warum Sie mit professionellem E-Mail-Marketing richtig liegen</h2>
 <p class="lead">Unser Team erfahrener Experten weiß, worauf es bei einer erfolgreichen Kampagne ankommt.</p>
-{cards([("clock","Direkte Ergebnisse","Rund 90&nbsp;% des Kampagnenerfolgs zeigen sich innerhalb von 48 Stunden."),
+{split("produkt.jpg","Einkaufswagen mit Paketen vor einem Laptop","Schnell, günstig, messbar","<p>Newsletter-Werbung erreicht Ihre Zielgruppe direkt und liefert Ergebnisse, die sich genau auswerten lassen.</p>",True)}
+<section class="alt"><div class="wrap">{cards([("clock","Direkte Ergebnisse","Rund 90&nbsp;% des Kampagnenerfolgs zeigen sich innerhalb von 48 Stunden."),
 ("euro","Geringe Kosten","Deutlich günstiger als die meisten anderen Formate, besonders als Offline-Mailings."),
 ("doc","Ausführliche Inhalte","Ideal für detaillierte Informationen – anders als kurze Social-Media-Beiträge."),
 ("inbox","Dauerhaft verfügbar","E-Mails bleiben im Postfach und können auch Tage später gelesen werden."),
