@@ -5,8 +5,9 @@ description: >-
   liegt und der Ladestand unter dem Ziel. Vorrang hat das Auto: läuft Netz- oder
   PV-Laden fürs Auto oder lädt das Auto (>= 500 W), wird nicht geladen.
   Register (Gen24, Integer-Modell): StorCtl_Mod 40348, OutWRte 40355 (negativ =
-  Zwangsladen), InWRte 40356. TESTMODUS: Leistung aus
-  input_number.speicher_netzlade_leistung (Start 1000 W).
+  Zwangsladen), InWRte 40356. Die Leistung wird im Betrieb nachgeführt
+  (Abweichung >= 1 % der Maximalleistung). Leistung aus
+  input_number.speicher_netzlade_leistung.
 mode: single
 triggers:
   - trigger: time_pattern
@@ -51,9 +52,13 @@ actions:
               {{ soc < ziel - (0 if is_state('input_boolean.speicher_netzladen_aktiv', 'on') else 5) }}
         sequence:
           - if:
-              - condition: state
-                entity_id: input_boolean.speicher_netzladen_aktiv
-                state: "off"
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity_id: input_boolean.speicher_netzladen_aktiv
+                    state: "off"
+                  - condition: template
+                    value_template: "{{ (reg[11] | float(0) - rate) | abs >= 100 }}"
             then:
               - action: modbus.write_register
                 data:
