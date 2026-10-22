@@ -68,7 +68,34 @@ Ressource mit neuer ID an und löscht die alte (so entsteht eine neue URL). In d
 - **Noch nicht** mit einer echten Ladung getestet. Der Ablauf wurde mit einem künstlichen Vorgang geprüft und das Testereignis wieder gelöscht.
 - Offene Fragen: Kennzeichen/Name im CSV? Frühere Ladungen manuell nachtragen? Eichrechtskonformer Zähler nötig (Arbeitgeber/Steuerberater klären)?
 
-Die EV-Lade-Steuerung (`automation.ev_laden_steuerung_openwb`) ist weiter **deaktiviert**; ein gemeinsamer Test mit der Nutzer:in steht aus.
+Die EV-Lade-Steuerung (`automation.ev_laden_steuerung_openwb`) ist seit dem 2026-10-22 **aktiv** und wurde gemeinsam getestet (siehe unten).
+
+## EV-Lade-Steuerung und Speicher-Netzladen (Stand 2026-10-22)
+
+### Was passiert ist (Befunde)
+
+- Die openWB schaltete am 2026-10-19 um 16:48, elf Sekunden nach dem Abstecken, **von selbst auf „Instant Charging"**. In der openWB steht „Standard nach Abstecken" im Standard-Lade-Profil auf Nein; die Ursache ist offen. Das Dashboard-„Aus" (`input_select.ev_lademodus`) wirkt nur über die Lade-Steuerung, deshalb lud das Auto sofort.
+- Absicherung: `automation.ev_sofortladen_sperre_openwb` (`automations/ev_sofortladen_sperre.yaml`). Bei Dashboard-Modus „Aus" setzt sie jeden openWB-Lademodus außer Stop/Standby sofort auf Stop zurück und schickt eine Meldung (`notify.mobile_app_weisstdudochnicht1`).
+- Beim Laden aus dem Netz entlud die Batterie das Auto mit. Grund: Die Lade-Steuerung war abgeschaltet.
+- **Cloudflare cacht 404-Antworten für `/local/`** (Bilder wurden vor dem Hochladen einmal über die Domain angefragt). Cache wurde geleert. Empfohlen, noch nicht angelegt: Cache-Regel `starts_with(uri.path, "/local/")` → Bypass cache.
+
+### EV-Lade-Steuerung (`automation.ev_laden_steuerung_openwb`)
+
+- Netzladen (Modus „Sofort", oder „Günstig" bei Preis unter `input_number.ev_max_strompreis`): openWB auf Instant, 16 A, und die Entladung des Speichers wird per Modbus auf **Hausverbrauch ohne Wallbox + 100 W** begrenzt (Register 40348 = 2, 40355 = Wert in 0,01 %).
+- **Geändert am 2026-10-22:** `house_w` kommt jetzt aus `sensor.openwb_controller_hausverbrauch`. Vorher `sensor.solarnet_leistung_verbrauch − Wallbox`; der Sensor sprang kurz auf 16 kW, die Entladegrenze stieg auf 34 %, die Batterie gab etwa 20 s lang 5,4 kW ab.
+- **Neu:** Absicherungsschritt im `default`-Zweig: Modus „Günstig", Preis nicht unter Limit, openWB auf Instant → Stop. `trace: stored_traces: 50`.
+- **Offen:** Bei Preisanstieg (12:00, 12:30, 13:45) ging der Merker `ev_netzladen_aktiv` aus und die Fronius-Register wurden zurückgesetzt, aber die openWB blieb auf Instant. Beim Moduswechsel um 12:14 kam Stop an. Ursache unbekannt; mit den 50 Traces beim nächsten Preisanstieg ansehen.
+- Wichtig: Die HA-Entitäten `number.ziebertz_wesseling_grenzwert_fur_die_entladeleistung_der_batterie` und `switch.ziebertz_wesseling_begrenzung_der_entladeleistung_der_batterie` schreiben **dieselben Modbus-Register**. Wer sie von Hand setzt, wird von der Automation innerhalb von 15 s überschrieben.
+
+### Speicher aus dem Netz laden (neu, `automation.speicher_netzladen_tibber`, Kopie `automations/speicher_netzladen_tibber.yaml`)
+
+- Ergebnis des Tests (2026-10-22, ~14:46): **Zwangsladen aus dem Netz funktioniert.** Mit 3000 W Testleistung lud der Speicher mit 3,0 kW, der Netzbezug stieg auf 2,1 kW (PV 1,7 kW, Haus 0,8 kW). Danach alles zurückgesetzt.
+- Modbus (Gen24, Integer-Modell, Block ab 40345; `sensor.reading_battery_settings` liest ihn): StorCtl_Mod **40348 = 3**, OutWRte **40355 = 65536 − Rate** (negativ = Zwangsladen), InWRte **40356 = Rate** mit Rate = Leistung ÷ 15360 W × 10000 (1000 W → 651, 3000 W → 1953). ChaGriSet 40360 steht auf 1. Zurücksetzen: 40348 = 0, 40355 = 10000, 40356 = 10000.
+- Helfer: `input_boolean.tibber_speicher_laden` (Hauptschalter, aus), `input_boolean.speicher_netzladen_aktiv` (Merker), `input_number.speicher_max_strompreis_netzladen` (0,28 €), `input_number.speicher_ziel_ladestand_netzladen` (80 %), `input_number.speicher_netzlade_leistung` (1000 W). Die Regler haben einen `initial`-Wert und springen nach einem HA-Neustart darauf zurück.
+- Regeln: Laden nur bei Schalter an, Preis unter Max-Preis, Ladestand unter Ziel (Neustart erst 5 % darunter), Auto lädt nicht (kein Netz-/PV-Laden, Wallbox < 500 W). Auto hat Vorrang; beim Stoppen werden die Register nicht angefasst, wenn die EV-Steuerung läuft.
+- Stand: Automation **aus**, Schalter **aus**, Register auf auto/100 %.
+- Bekannte Lücken: (1) Eine geänderte `speicher_netzlade_leistung` wirkt erst nach Neustart des Ladens (Merker kurz aus und an). (2) Keine Hysterese beim Preis; (3) Ziel-SoC wird nur von der Automation überwacht, nicht im Fronius (MinRsvPct 40350 bleibt unverändert); (4) noch kein Dashboard-Element.
+- Quellen für die Registerwerte: libe.net „Fronius and BYD battery control via Modbus", simon42-Forum „Fronius netzladung". Beide gelten für ähnliche Geräte; auf diesem System jetzt bestätigt.
 
 ## tado Heizkörper (HomeKit)
 
@@ -83,8 +110,10 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 2. Aufräumen: alte Designs/Themes/Dateien (A–G, `zuhause_glas*.yaml`, CSS-Ressource `dfda6344b60a4461adcffe2eb66d916f`, Ordner `www/zuhause`), nur nach Rückfrage; Design H eventuell zum Haupt-Dashboard machen.
 3. Kleinere Fragen: Welche Haustür-Lampe bleibt (`light.haustur_2` oder `switch.homee_358_switch_1105`)? Was ist der Tracker `Base` bei `person.marlon`? Foto `studio.jpg` fehlt; `light.schlafzimmer_2/_3` unbekannt.
 4. Cloudflare-Tunnel absichern (Cloudflare Access, ip_ban, Bot-Schutz).
-5. Speicher-Manager (nur ein Schreiber auf den Fronius, erst Trockenlauf, EOS-Plan als Eingang); EOS-Ladezustand im Plan stimmt nicht (0 statt echter Wert); EOS-PV-Reihe nachführen.
-6. Gemeinsamer Test der EV-Lade-Steuerung; Ladeprotokoll mit echter Ladung prüfen.
+5. Speicher-Manager (nur ein Schreiber auf den Fronius, erst Trockenlauf, EOS-Plan als Eingang); EOS-Ladezustand im Plan stimmt nicht (0 statt echter Wert); EOS-PV-Reihe nachführen. Teilstück vorhanden: `speicher_netzladen_tibber` (siehe oben), noch nicht dauerhaft eingeschaltet.
+6. Ladeprotokoll mit echter Ladung prüfen. EV-Lade-Steuerung läuft; offen ist, warum Stop bei Preisanstieg nicht ankam (Traces ansehen), und die Ursache für das Umschalten auf Instant nach dem Abstecken.
+8. Cloudflare-Cache-Regel für `/local/` (Bypass cache) anlegen.
+9. Speicher-Netzladen: Dashboard-Elemente (Schalter, Max-Preis, Ziel, Leistung), Leistungsänderung im laufenden Betrieb übernehmen, Hysterese für den Preis, dann dauerhaft einschalten.
 7. Aufräumen im System: alte Tibber-Testansichten, ~185 nicht verfügbare Sensoren, verklemmtes Schloss `lock.home`.
 
 ## Technische Hinweise (ha-mcp)
