@@ -125,3 +125,17 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - Datei-Editor-API (POST) für Dateien: `ha_manage_app(slug="core_configurator", path="/api/save", method="POST", request_headers={"Content-Type":"application/x-www-form-urlencoded"}, body="filename=…&text=…")`, **mit** `python_transform="response = str(response)[:200]"`, sonst schlägt der Aufruf fehl. Nach Theme-Änderung `frontend.reload_themes`.
 - Dashboard-Screenshots sind im ha-mcp nicht aktiviert.
 - Große Tool-Ergebnisse speichert die Umgebung in Dateien; mit `python3` auslesen.
+
+## Änderungen seit der ersten Übergabe (2026-10-24)
+
+- **Hausverbrauch:** `sensor.solarnet_leistung_verbrauch` ist nur der Netzbezug (0 W bei Einspeisung), **nicht** der Hausverbrauch.
+  Neuer Hilfssensor `sensor.hausverbrauch_berechnet` (Template-Helper) = max(0, Netz + PV + Batterie, Batterie positiv = Entladung).
+  Eingesetzt in der Energiefluss-Karte (`home: {entity: …}` in der Karten-Konfiguration) und in der Kachel auf der Startseite.
+  Der Dashboard-Export in `dashboards/design-h-klar.json` ist aktualisiert.
+- **EV-Lade-Steuerung** (`automation.ev_laden_steuerung_openwb`, aktuell **aktiv**, Modus „Günstig" lief gerade): Beim Netzladen wird die Batterie-Entladung nur noch auf den Teil des
+  Hausverbrauchs begrenzt, den die PV nicht deckt. Variablen im Skript: `house_w` (openWB-Hausverbrauch `sensor.openwb_controller_hausverbrauch`),
+  `pv_w` (`sensor.power_photovoltaics`), `deficit_w = max(house_w - pv_w, 0)`, `out_rate = 0 if deficit_w < 50 else (deficit_w + 100) / wchamax_w * 10000`;
+  `needs_write` schreibt auch beim Wechsel von/auf 0. Register: Modbus 40348 (Modus 2 = Entladung begrenzt), 40355 (Entladerate in 0,01 %).
+  Gemessen: Batterie von rund 2000 W auf rund 0 W. Beobachten bei Wolken (Hin- und Herschalten), Schwelle 50 W und Reserve 100 W sind einstellbar.
+- Die Automation enthält inzwischen auch eine von der Nutzer:in ergänzte Absicherung (Günstig, Preis über Limit, openWB steht auf Instant → Stop).
+- Die Datei `automations/ev_ladeprotokoll.yaml` ist weiter aktuell. Die EV-Steuerung selbst liegt nur in Home Assistant (nicht hier exportiert).

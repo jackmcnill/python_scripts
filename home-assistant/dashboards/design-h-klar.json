@@ -1225,7 +1225,7 @@
        "show_icon": false,
        "show_label": false,
        "triggers_update": [
-        "sensor.solarnet_leistung_verbrauch",
+        "sensor.hausverbrauch_berechnet",
         "sensor.power_photovoltaics",
         "sensor.byd_battery_box_premium_hv_state_of_charge",
         "sensor.openwb_chargepoint_1_ladeleistung",
@@ -1236,7 +1236,7 @@
         "navigation_path": "/design-h-klar/energie"
        },
        "custom_fields": {
-        "a": "[[[ const e=states['sensor.solarnet_leistung_verbrauch']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:home\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#92c4ff\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Hausverbrauch</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
+        "a": "[[[ const e=states['sensor.hausverbrauch_berechnet']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:home\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#92c4ff\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Hausverbrauch</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
         "b": "[[[ const e=states['sensor.power_photovoltaics']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:solar-power\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#f8ca78\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">PV</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
         "c": "[[[ const e=states['sensor.byd_battery_box_premium_hv_state_of_charge']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:battery\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#84ebbe\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Speicher</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div>'; ]]]",
         "d": "[[[ const e=states['sensor.openwb_chargepoint_1_ladeleistung']; let v='—'; if(e && !['unavailable','unknown'].includes(e.state)){const n=Number(e.state); const u=e.attributes.unit_of_measurement||''; v=(Number.isFinite(n)?n.toLocaleString('de-DE',{maximumFractionDigits:1}):e.state)+(u?' '+u:'');} return '<ha-icon icon=\"mdi:ev-station\" style=\"--mdc-icon-size:32px;filter:drop-shadow(0 0 7px currentColor);color:#9ac0ff\"></ha-icon><div style=\"font-size:10px;font-weight:600;margin-top:5px\">Wallbox</div><div style=\"font-size:15px;font-weight:800;margin-top:3px;white-space:nowrap\">'+v+'</div><div style=\"font-size:10px;opacity:.8;margin-top:2px\">Lademodus: '+(states['input_select.ev_lademodus']?states['input_select.ev_lademodus'].state:'—')+'</div>'; ]]]"
@@ -1424,6 +1424,9 @@
        },
        "card_mod": {
         "style": "ha-card.glass {\n  background: linear-gradient(145deg,rgba(18,27,45,calc(.50 * var(--gi-k,1))),rgba(28,40,60,calc(.28 * var(--gi-k,1)))) !important;\n  backdrop-filter: blur(24px) saturate(138%) !important;\n  -webkit-backdrop-filter: blur(24px) saturate(138%) !important;\n  border: 1px solid rgba(240,247,255,.44) !important;\n  border-radius: 22px !important;\n  box-shadow: inset 0 0 26px 2px rgba(232,243,255,.38),inset 0 0 6px rgba(255,255,255,.247),inset 0 1px 0 rgba(255,255,255,.14) !important;\n}\n"
+       },
+       "home": {
+        "entity": "sensor.hausverbrauch_berechnet"
        }
       }
      ],
