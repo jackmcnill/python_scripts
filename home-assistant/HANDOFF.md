@@ -139,3 +139,11 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
   Gemessen: Batterie von rund 2000 W auf rund 0 W. Beobachten bei Wolken (Hin- und Herschalten), Schwelle 50 W und Reserve 100 W sind einstellbar.
 - Die Automation enthält inzwischen auch eine von der Nutzer:in ergänzte Absicherung (Günstig, Preis über Limit, openWB steht auf Instant → Stop).
 - Die Datei `automations/ev_ladeprotokoll.yaml` ist weiter aktuell. Die EV-Steuerung selbst liegt nur in Home Assistant (nicht hier exportiert).
+
+## Offen (Stand 2026-10-24 nachmittags, Home Assistant war von der Cloud-Session aus nicht erreichbar)
+
+- **Speicher und Auto gleichzeitig aus dem Netz laden:** `automation.speicher_netzladen_tibber` wurde angepasst (Bedingungen „Auto lädt nicht per Netz" und „Wallbox < 500 W" entfernt, schreibt Register neu, wenn `reg[3] != 3`).
+  Die passende Änderung an `automation.ev_laden_steuerung_openwb` (keine Entladegrenze schreiben und Register nicht zurücksetzen, solange `input_boolean.speicher_netzladen_aktiv` an ist) lief in eine Zeitüberschreitung. **Prüfen, ob sie gespeichert ist**; dabei auch den versehentlich geschriebenen Schlüssel `resets_guarded` auf Wurzelebene der Automation entfernen.
+- **Neue Anforderung:** Beim Netzladen des Autos soll PV-Überschuss (PV größer als Hausverbrauch ohne Wallbox) in den Speicher gehen und nicht ins Auto.
+  Idee: In der EV-Steuerung (Netzladen-Zweig) bei `surplus = pv_w - house_w > 0` und Speicher nicht voll Zwangsladen setzen (40348 = 3, 40356 = Rate, 40355 = 65536 - Rate, Rate = Überschuss × 0,95 / WChaMax × 10000), sonst die Entladegrenze nach PV-Fehlbetrag wie bisher.
+  Nur wenn `speicher_netzladen_aktiv` aus ist (sonst übernimmt die Speicher-Automation).
