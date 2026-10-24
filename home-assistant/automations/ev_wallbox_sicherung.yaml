@@ -1,8 +1,7 @@
 id: ev_wallbox_sicherung
 alias: EV Wallbox Sicherung (openWB)
 description: Unabhängige Sicherung, läuft auch wenn 'EV Laden Steuerung (openWB)' ausgeschaltet ist. Die openWB wird
-  auf Stop gestellt, wenn nicht geladen werden soll (Steuerautomation aus, Lademodus 'Aus', Modus 'Günstig' bei Preis
-  ab ev_max_strompreis). Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
+  auf Stop gestellt, wenn nicht geladen werden soll. Steuerautomation aus: erlaubt nur im internen openWB-Modus 'PV Charging'. Steuerautomation an: Stop bei Lademodus 'Aus' oder 'Günstig' bei Preis ab ev_max_strompreis. Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
 triggers:
 - {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'off', id: auto_off}
 - {trigger: state, entity_id: input_select.ev_lademodus, id: mode}
@@ -15,7 +14,7 @@ actions:
     modus: '{{ states(''input_select.ev_lademodus'') }}'
     price_high: '{{ states(''sensor.electricity_price_wilhelm_busch_strasse_17'') | float(99) >= states(''input_number.ev_max_strompreis'') | float(0) }}'
 - variables:
-    block: '{{ auto_off or modus == ''Aus'' or (modus == ''Günstig'' and price_high) }}'
+    block: '{{ (auto_off and not is_state(''select.openwb_chargepoint_1_lademodus'', ''PV Charging'')) or (not auto_off and (modus == ''Aus'' or (modus == ''Günstig'' and price_high))) }}'
 - alias: 'Sperren: Wallbox auf Stop'
   if:
   - condition: template
