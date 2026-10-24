@@ -15,7 +15,7 @@ Die Ordner `dashboards/`, `cards/`, `themes/`, `automations/` und `backups/` ent
 
 ## Wichtige Regeln, die die Nutzer:in gesetzt hat
 
-- Bestehende Dashboards **nicht** ändern, sondern neue anlegen. Ausnahme: Dashboard **Mutter** nur auf ausdrückliche Anfrage (einmal geschehen: Energiefluss-Karte durch `custom:energiefluss-karte` ersetzt). Das Original „Design A – Klar" (`design-a-klar`) bleibt unberührt.
+- Bestehende Dashboards **nicht** ändern, sondern neue anlegen. Ausnahme: Dashboard **Mutter** nur auf ausdrückliche Anfrage (einmal geschehen: Energiefluss-Karte durch `custom:energiefluss-karte` ersetzt); es bleibt sonst unverändert. **Design H – Klar (Kopie)** (`design-h-klar`) ist das produktive Dashboard des Nutzers, Änderungen dort sind gewünscht. „Design A – Klar" (`design-a-klar`) wird nicht mehr genutzt und nicht mehr gepflegt (Stand 2026-10-24).
 - Einliegerwohnung und Anbau gehören nicht ins Haupt-Dashboard.
 - Waschmaschine, Trockner, Gefrierschrank dürfen nie ausgeschaltet werden (nur Messung, keine Schalter im Dashboard).
 - Demand Control der Klimaanlage gilt für alle Innengeräte gemeinsam (steht auf 30 %). **Wert nicht ändern**, nur die Einstellmöglichkeit ist im Dashboard.
@@ -155,3 +155,4 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - Maximale Speicher-Ladeleistung = WChaMax (15,36 kW); ggf. Grenze setzen.
 - Die Regel gilt nur für Sofort und Günstig.
 - Export der EV-Steuerung: `automations/ev_laden_steuerung_openwb.yaml` (Stand Hash 347492df5fd9ba5c).
+- Rollläden: In Design H haben die sechs Rollladen-Kacheln (Erdgeschoss: Terrassenfenster, Terrassentür; Obergeschoss: vier Rollläden) neben `cover-open-close` jetzt `cover-position` (Schieberegler). `cover.shutter_bedroom` und `cover.rollo_ew` haben noch keine Kachel.
