@@ -140,10 +140,18 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - Die Automation enthält inzwischen auch eine von der Nutzer:in ergänzte Absicherung (Günstig, Preis über Limit, openWB steht auf Instant → Stop).
 - Die Datei `automations/ev_ladeprotokoll.yaml` ist weiter aktuell. Die EV-Steuerung selbst liegt nur in Home Assistant (nicht hier exportiert).
 
-## Offen (Stand 2026-10-24 nachmittags, Home Assistant war von der Cloud-Session aus nicht erreichbar)
+## Erledigt (Stand 2026-10-24 nachmittags, HA wieder erreichbar)
 
-- **Speicher und Auto gleichzeitig aus dem Netz laden:** `automation.speicher_netzladen_tibber` wurde angepasst (Bedingungen „Auto lädt nicht per Netz" und „Wallbox < 500 W" entfernt, schreibt Register neu, wenn `reg[3] != 3`).
-  Die passende Änderung an `automation.ev_laden_steuerung_openwb` (keine Entladegrenze schreiben und Register nicht zurücksetzen, solange `input_boolean.speicher_netzladen_aktiv` an ist) lief in eine Zeitüberschreitung. **Prüfen, ob sie gespeichert ist**; dabei auch den versehentlich geschriebenen Schlüssel `resets_guarded` auf Wurzelebene der Automation entfernen.
-- **Neue Anforderung:** Beim Netzladen des Autos soll PV-Überschuss (PV größer als Hausverbrauch ohne Wallbox) in den Speicher gehen und nicht ins Auto.
-  Idee: In der EV-Steuerung (Netzladen-Zweig) bei `surplus = pv_w - house_w > 0` und Speicher nicht voll Zwangsladen setzen (40348 = 3, 40356 = Rate, 40355 = 65536 - Rate, Rate = Überschuss × 0,95 / WChaMax × 10000), sonst die Entladegrenze nach PV-Fehlbetrag wie bisher.
-  Nur wenn `speicher_netzladen_aktiv` aus ist (sonst übernimmt die Speicher-Automation).
+- `automation.ev_laden_steuerung_openwb` (Hash 347492df5fd9ba5c) ist angepasst und gespeichert. Der Eintrag `resets_guarded` existiert nicht; die frühere Änderung war nie gespeichert.
+- **Speicher-Netzladen hat Vorrang:** Ist `input_boolean.speicher_netzladen_aktiv` an, schreibt die EV-Steuerung keine Speicher-Register (`needs_write` false, Reset-Schreibzugriffe im PV-Zweig und im Default-Zweig sind mit dieser Bedingung gekapselt). Auto und Speicher dürfen gleichzeitig aus dem Netz laden.
+- **PV-Überschuss beim Netzladen in den Speicher:** Neue Variablen `grid_store`, `soc`, `surplus_house_w = max(pv - Hausverbrauch ohne Wallbox, 0)` und `chg_rate`. Ist `chg_rate > 0` (Überschuss >= 100 W, SoC < `input_number.ev_speicher_voll_ab`, Speicher-Netzladen aus), wird zwangsgeladen: 40348 = 3, 40356 = chg_rate, 40355 = 65536 - chg_rate; chg_rate = Überschuss × 0,95 / WChaMax × 10000, max. 10000. Sonst wie bisher Entladegrenze nach PV-Fehlbetrag (40348 = 2, 40355 = out_rate).
+- Hinweis: `sensor.reading_battery_settings` liefert OutWRte vorzeichenbehaftet (z. B. -1953 bei Zwangsladung), geschrieben wird 65536 - Rate. Der Vergleich in `needs_write` nutzt deshalb `cur_rate + chg_rate`.
+- `input_number.speicher_ziel_ladestand_netzladen` existiert.
+
+## Offen
+
+- Der Zweig „Überschuss in den Speicher" ist noch nicht im Echtbetrieb getestet (beim Test lief das Speicher-Netzladen). Test: Speicher-Netzladen aus, Auto lädt aus dem Netz, PV > Hausverbrauch; Batterie sollte mit ca. dem Überschuss laden.
+- `ev_speicher_voll_ab` steht auf 100 % (Überschuss geht erst bei vollem Speicher ins Auto); Wunsch ggf. 98 %.
+- Maximale Speicher-Ladeleistung = WChaMax (15,36 kW); ggf. Grenze setzen.
+- Die Regel gilt nur für Sofort und Günstig.
+- Export von `automation.ev_laden_steuerung_openwb` ins Repo steht noch aus.
