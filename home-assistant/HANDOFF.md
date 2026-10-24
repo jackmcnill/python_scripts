@@ -156,3 +156,11 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - Die Regel gilt nur für Sofort und Günstig.
 - Export der EV-Steuerung: `automations/ev_laden_steuerung_openwb.yaml` (Stand Hash 347492df5fd9ba5c).
 - Rollläden: In Design H haben die sechs Rollladen-Kacheln (Erdgeschoss: Terrassenfenster, Terrassentür; Obergeschoss: vier Rollläden) neben `cover-open-close` jetzt `cover-position` (Schieberegler). `cover.shutter_bedroom` und `cover.rollo_ew` haben noch keine Kachel.
+
+## Button+ (Mark Wolters)
+
+- Der Nutzer besitzt ein Button+ (ESP32-Wandpanel mit Display) und möchte Hilfe bei der Konfiguration der Anzeige. Es ist per MQTT angebunden. In Home Assistant sind dazu bisher keine Entitäten sichtbar.
+- Die Konfiguration erfolgt in der Weboberfläche des Geräts bzw. im Button+ Configurator (Label, Icon, Wert und Topic je Button).
+- Das Gerät hängt im Heimnetz und ist aus der Cloud-Session nicht erreichbar (Proxy: „private/reserved range"). Nur eine lokale Session im Heimnetz kommt per HTTP an das Gerät. Die IP-Adresse fragt die lokale Session beim Nutzer ab; sie steht bewusst nicht im Repo.
+- Offen: Welche Buttons was anzeigen und beim Antippen auslösen sollen. Danach: MQTT-Anbindung und Automationen in Home Assistant anlegen und die Button+-Konfiguration erzeugen bzw. importieren.
+- Keine Zugangsdaten für das Gerät oder den Broker ins Repo.
