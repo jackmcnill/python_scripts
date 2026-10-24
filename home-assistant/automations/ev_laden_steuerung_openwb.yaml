@@ -1,0 +1,288 @@
+id: '1792275549441'
+alias: EV Laden Steuerung (openWB)
+description: 'Steuert die openWB nach dem Dashboard-Modus (input_select.ev_lademodus). Sofort und Günstig laden mit voller
+  Leistung aus dem Netz; währenddessen wird die Entladung des Fronius-Speichers (Modbus 40355) auf den Teil des Hausverbrauchs
+  (ohne Wallbox) begrenzt, den die PV nicht deckt. Ist die PV größer als der Hausverbrauch, wird die Batterie nicht entladen.
+  PV-Überschuss: erst Hausspeicher, dann Auto. Netzladen des Autos: PV-Überschuss (95 %) per Zwangsladung in den Speicher
+  bis ev_speicher_voll_ab. Läuft das Netzladen des Speichers (input_boolean.speicher_netzladen_aktiv), schreibt diese Automation
+  keine Speicher-Register.'
+triggers:
+- id: loop
+  seconds: /15
+  trigger: time_pattern
+- entity_id: input_select.ev_lademodus
+  id: mode
+  trigger: state
+- entity_id: binary_sensor.openwb_chargepoint_1_ladekabel
+  id: plug
+  trigger: state
+conditions: []
+actions:
+- variables:
+    phases: '{{ [states(''sensor.openwb_chargepoint_1_aktive_phasen'') | int(1), 1] | max }}'
+    reg: '{{ states(''sensor.reading_battery_settings'').split('','') }}'
+    surplus_w: '{{ states(''sensor.ev_pv_uberschuss'') | float(0) }}'
+    wallbox_w: '{{ states(''sensor.openwb_chargepoint_1_ladeleistung'') | float(0) }}'
+- variables:
+    cur_mode: '{{ reg[3] | float(-1) if reg | length > 3 else -1 }}'
+    cur_rate: '{{ reg[10] | float(-1) if reg | length > 10 else -1 }}'
+    house_w: '{{ [states(''sensor.openwb_controller_hausverbrauch'') | float(0), 0] | max }}'
+    pv_amps: '{{ [[(surplus_w / (230 * phases)) | int, 6] | max, 16] | min }}'
+    wchamax_w: '{{ reg[0] | float(15360) }}'
+    pv_w: '{{ [states(''sensor.power_photovoltaics'') | float(0), 0] | max }}'
+    deficit_w: '{{ [house_w - pv_w, 0] | max }}'
+- variables:
+    out_rate: '{{ 0 if deficit_w < 50 else ([[(deficit_w + 100) / wchamax_w * 10000, 0] | max, 10000] | min | int) }}'
+    grid_store: '{{ is_state(''input_boolean.speicher_netzladen_aktiv'', ''on'') }}'
+    soc: '{{ states(''sensor.byd_battery_box_premium_hv_state_of_charge'') | float(100) }}'
+    surplus_house_w: '{{ [pv_w - house_w, 0] | max }}'
+    chg_rate: '{{ 0 if grid_store or surplus_house_w < 100 or soc >= states(''input_number.ev_speicher_voll_ab'') | float(98)
+      else ([(surplus_house_w * 0.95 / wchamax_w * 10000) | int, 10000] | min) }}'
+- variables:
+    cur_in: '{{ reg[11] | float(-1) if reg | length > 11 else -1 }}'
+    needs_write: '{% if grid_store %}false{% elif chg_rate > 0 %}{{ cur_mode != 3 or (cur_in - chg_rate) | abs >= 200 or (cur_rate
+      + chg_rate) | abs >= 200 }}{% else %}{{ cur_mode != 2 or (out_rate - cur_rate) | abs >= 200 or (out_rate == 0 and cur_rate
+      > 0) or (out_rate > 0 and cur_rate == 0) }}{% endif %}'
+- choose:
+  - alias: 'Netzladen: Sofort, oder günstig'
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.openwb_chargepoint_1_ladekabel
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: input_select.ev_lademodus
+        state: Sofort
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_select.ev_lademodus
+          state:
+          - Günstig
+          - Günstig + PV
+        - below: input_number.ev_max_strompreis
+          condition: numeric_state
+          entity_id: sensor.electricity_price_wilhelm_busch_strasse_17
+    sequence:
+    - if:
+      - condition: state
+        entity_id: input_boolean.ev_netzladen_aktiv
+        state: 'off'
+      then:
+      - if:
+        - condition: state
+          entity_id: input_boolean.ev_pv_laden_aktiv
+          state: 'on'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.ev_pv_laden_aktiv
+      - action: number.set_value
+        data:
+          value: 16
+        target:
+          entity_id: number.openwb_chargepoint_1_soll_ladestrom_sofortladen
+      - action: select.select_option
+        data:
+          option: Instant Charging
+        target:
+          entity_id: select.openwb_chargepoint_1_lademodus
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev_netzladen_aktiv
+    - if:
+      - condition: template
+        value_template: '{{ needs_write }}'
+      then:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ chg_rate > 0 }}'
+          sequence:
+          - action: modbus.write_register
+            data:
+              address: 40348
+              hub: gen24
+              slave: 1
+              value: 3
+          - action: modbus.write_register
+            data:
+              address: 40356
+              hub: gen24
+              slave: 1
+              value: '{{ chg_rate }}'
+          - action: modbus.write_register
+            data:
+              address: 40355
+              hub: gen24
+              slave: 1
+              value: '{{ 65536 - chg_rate }}'
+        default:
+        - action: modbus.write_register
+          data:
+            address: 40348
+            hub: gen24
+            slave: 1
+            value: 2
+        - action: modbus.write_register
+          data:
+            address: 40355
+            hub: gen24
+            slave: 1
+            value: '{{ out_rate }}'
+  - alias: 'PV-Überschuss: Speicher zuerst, dann Auto'
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.openwb_chargepoint_1_ladekabel
+      state: 'on'
+    - condition: state
+      entity_id: input_select.ev_lademodus
+      state:
+      - PV-Überschuss
+      - Günstig + PV
+    - above: input_number.ev_speicher_voll_ab
+      condition: numeric_state
+      entity_id: sensor.byd_battery_box_premium_hv_state_of_charge
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.ev_pv_laden_aktiv
+          state: 'on'
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.ev_pv_uberschuss_ausreichend
+            for: '{{ states(''input_number.ev_pv_stoppverzogerung'') | int(300) | timestamp_custom(''%H:%M:%S'', false) }}'
+            state: 'off'
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.ev_pv_laden_aktiv
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.ev_pv_uberschuss_ausreichend
+          for: '{{ states(''input_number.ev_pv_startverzogerung'') | int(60) | timestamp_custom(''%H:%M:%S'', false) }}'
+          state: 'on'
+    sequence:
+    - if:
+      - condition: state
+        entity_id: input_boolean.ev_netzladen_aktiv
+        state: 'on'
+      then:
+      - if:
+        - condition: state
+          entity_id: input_boolean.speicher_netzladen_aktiv
+          state: 'off'
+        then:
+        - action: modbus.write_register
+          data:
+            address: 40348
+            hub: gen24
+            slave: 1
+            value: 0
+        - action: modbus.write_register
+          data:
+            address: 40355
+            hub: gen24
+            slave: 1
+            value: 10000
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ev_netzladen_aktiv
+    - else:
+      - if:
+        - condition: template
+          value_template: '{{ states(''number.openwb_chargepoint_1_soll_ladestrom_sofortladen'') | int(0) != pv_amps }}'
+        then:
+        - action: number.set_value
+          data:
+            value: '{{ pv_amps }}'
+          target:
+            entity_id: number.openwb_chargepoint_1_soll_ladestrom_sofortladen
+      if:
+      - condition: state
+        entity_id: input_boolean.ev_pv_laden_aktiv
+        state: 'off'
+      then:
+      - action: number.set_value
+        data:
+          value: '{{ pv_amps }}'
+        target:
+          entity_id: number.openwb_chargepoint_1_soll_ladestrom_sofortladen
+      - action: select.select_option
+        data:
+          option: Instant Charging
+        target:
+          entity_id: select.openwb_chargepoint_1_lademodus
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev_pv_laden_aktiv
+  default:
+  - if:
+    - condition: state
+      entity_id: input_boolean.ev_netzladen_aktiv
+      state: 'on'
+    then:
+    - if:
+      - condition: state
+        entity_id: input_boolean.speicher_netzladen_aktiv
+        state: 'off'
+      then:
+      - action: modbus.write_register
+        data:
+          address: 40348
+          hub: gen24
+          slave: 1
+          value: 0
+      - action: modbus.write_register
+        data:
+          address: 40355
+          hub: gen24
+          slave: 1
+          value: 10000
+    - action: select.select_option
+      data:
+        option: Stop
+      target:
+        entity_id: select.openwb_chargepoint_1_lademodus
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.ev_netzladen_aktiv
+  - if:
+    - condition: state
+      entity_id: input_boolean.ev_pv_laden_aktiv
+      state: 'on'
+    then:
+    - action: select.select_option
+      data:
+        option: Stop
+      target:
+        entity_id: select.openwb_chargepoint_1_lademodus
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.ev_pv_laden_aktiv
+  - alias: 'Absicherung: Günstig, Preis über Limit, openWB steht auf Instant -> Stop'
+    if:
+    - condition: state
+      entity_id: input_select.ev_lademodus
+      state: Günstig
+    - condition: not
+      conditions:
+      - condition: numeric_state
+        entity_id: sensor.electricity_price_wilhelm_busch_strasse_17
+        below: input_number.ev_max_strompreis
+    - condition: state
+      entity_id: select.openwb_chargepoint_1_lademodus
+      state: Instant Charging
+    then:
+    - action: select.select_option
+      data:
+        option: Stop
+      target:
+        entity_id: select.openwb_chargepoint_1_lademodus
+max: 3
+max_exceeded: silent
+mode: queued

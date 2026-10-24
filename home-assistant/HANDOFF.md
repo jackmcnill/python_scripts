@@ -154,4 +154,4 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - `ev_speicher_voll_ab` steht auf 100 % (Überschuss geht erst bei vollem Speicher ins Auto); Wunsch ggf. 98 %.
 - Maximale Speicher-Ladeleistung = WChaMax (15,36 kW); ggf. Grenze setzen.
 - Die Regel gilt nur für Sofort und Günstig.
-- Export von `automation.ev_laden_steuerung_openwb` ins Repo steht noch aus.
+- Export der EV-Steuerung: `automations/ev_laden_steuerung_openwb.yaml` (Stand Hash 347492df5fd9ba5c).
