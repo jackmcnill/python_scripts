@@ -1,0 +1,45 @@
+id: ev_wallbox_sicherung
+alias: EV Wallbox Sicherung (openWB)
+description: Unabhängige Sicherung, läuft auch wenn 'EV Laden Steuerung (openWB)' ausgeschaltet ist. Die openWB wird
+  auf Stop gestellt, wenn nicht geladen werden soll (Steuerautomation aus, Lademodus 'Aus', Modus 'Günstig' bei Preis
+  ab ev_max_strompreis). Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
+triggers:
+- {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'off', id: auto_off}
+- {trigger: state, entity_id: input_select.ev_lademodus, id: mode}
+- {trigger: state, entity_id: select.openwb_chargepoint_1_lademodus, id: openwb}
+- {trigger: time_pattern, minutes: /1, id: loop}
+conditions: []
+actions:
+- variables:
+    auto_off: '{{ is_state(''automation.ev_laden_steuerung_openwb'', ''off'') }}'
+    modus: '{{ states(''input_select.ev_lademodus'') }}'
+    price_high: '{{ states(''sensor.electricity_price_wilhelm_busch_strasse_17'') | float(99) >= states(''input_number.ev_max_strompreis'') | float(0) }}'
+- variables:
+    block: '{{ auto_off or modus == ''Aus'' or (modus == ''Günstig'' and price_high) }}'
+- alias: 'Sperren: Wallbox auf Stop'
+  if:
+  - condition: template
+    value_template: '{{ block and (not is_state(''select.openwb_chargepoint_1_lademodus'', ''Stop'') or states(''sensor.openwb_chargepoint_1_ladeleistung'') | float(0) > 500) }}'
+  then:
+  - {action: select.select_option, data: {option: Stop}, target: {entity_id: select.openwb_chargepoint_1_lademodus}}
+- alias: 'Steuerautomation aus: Register und Merker zurücksetzen'
+  if:
+  - condition: template
+    value_template: '{{ auto_off }}'
+  then:
+  - if:
+    - {condition: state, entity_id: input_boolean.speicher_netzladen_aktiv, state: 'off'}
+    - {condition: state, entity_id: input_boolean.ev_netzladen_aktiv, state: 'on'}
+    then:
+    - {action: modbus.write_register, data: {address: 40348, hub: gen24, slave: 1, value: 0}}
+    - {action: modbus.write_register, data: {address: 40355, hub: gen24, slave: 1, value: 10000}}
+  - if:
+    - {condition: state, entity_id: input_boolean.ev_netzladen_aktiv, state: 'on'}
+    then:
+    - {action: input_boolean.turn_off, target: {entity_id: input_boolean.ev_netzladen_aktiv}}
+  - if:
+    - {condition: state, entity_id: input_boolean.ev_pv_laden_aktiv, state: 'on'}
+    then:
+    - {action: input_boolean.turn_off, target: {entity_id: input_boolean.ev_pv_laden_aktiv}}
+mode: single
+max_exceeded: silent

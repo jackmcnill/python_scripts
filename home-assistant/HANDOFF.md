@@ -164,3 +164,10 @@ Einliegerwohnung Küche VA1695753472. Entitäts-IDs: `climate.tado_smart_radiato
 - Das Gerät hängt im Heimnetz und ist aus der Cloud-Session nicht erreichbar (Proxy: „private/reserved range"). Nur eine lokale Session im Heimnetz kommt per HTTP an das Gerät. Die IP-Adresse fragt die lokale Session beim Nutzer ab; sie steht bewusst nicht im Repo.
 - Offen: Welche Buttons was anzeigen und beim Antippen auslösen sollen. Danach: MQTT-Anbindung und Automationen in Home Assistant anlegen und die Button+-Konfiguration erzeugen bzw. importieren.
 - Keine Zugangsdaten für das Gerät oder den Broker ins Repo.
+
+## EV Wallbox Sicherung (2026-10-24)
+
+- Vorfall: Der Nutzer hatte `automation.ev_laden_steuerung_openwb` ausgeschaltet, damit nicht mehr geladen wird. Die openWB blieb dabei auf Instant stehen, das Auto lud bei Preis über Limit mit rund 10,8 kW (bis zum manuellen Stopp 17:38).
+- Neu: `automation.ev_wallbox_sicherung_openwb` (id `ev_wallbox_sicherung`, Export `automations/ev_wallbox_sicherung.yaml`). Sie läuft unabhängig und stellt die openWB auf Stop, wenn die Steuerautomation aus ist, der Modus „Aus" gilt oder im Modus „Günstig" der Preis ab `ev_max_strompreis` liegt (Prüfung bei Änderungen und jede Minute). Beim Ausschalten der Steuerautomation werden zusätzlich Fronius-Register (40348 = 0, 40355 = 10000, nur wenn das Speicher-Netzladen nicht aktiv ist) und die Merker zurückgesetzt.
+- Bedeutung: Steuerautomation aus = nicht laden. Manuelles Laden über die openWB-Oberfläche wird in diesem Zustand wieder auf Stop gestellt.
+- Hinweis: ha-mcp sortiert beim Anlegen einer Automation die Schlüssel eines `variables`-Blocks alphabetisch; abhängige Variablen deshalb in getrennte `variables`-Schritte legen.
