@@ -1,7 +1,6 @@
 id: ev_wallbox_sicherung
 alias: EV Wallbox Sicherung (openWB)
-description: Unabhängige Sicherung, läuft auch wenn 'EV Laden Steuerung (openWB)' ausgeschaltet ist. Die openWB wird
-  auf Stop gestellt, wenn nicht geladen werden soll. Steuerautomation aus: Modus 'PV-Überschuss' -> openWB-eigener Modus 'PV Charging', sonst Stop; beim Wiedereinschalten wird PV Charging beendet. Steuerautomation an: Stop bei Lademodus 'Aus' oder 'Günstig' bei Preis ab ev_max_strompreis. Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
+description: 'Unabhängige Sicherung, läuft auch wenn ''EV Laden Steuerung (openWB)'' ausgeschaltet ist. Steuerautomation aus - Modus ''PV-Überschuss'': openWB-eigener Modus ''PV Charging'' (lädt nur mit PV-Überschuss), jeder andere ev_lademodus: Stop. Wird die Steuerautomation wieder eingeschaltet, wird ''PV Charging'' beendet (Stop), die Steuerung übernimmt. Steuerautomation an: Stop bei Lademodus ''Aus'' oder im Modus ''Günstig'' bei Preis ab ev_max_strompreis. Beim Ausschalten der Steuerautomation werden außerdem die Fronius-Register (sofern nicht vom Speicher-Netzladen belegt) und die Merker ev_netzladen_aktiv / ev_pv_laden_aktiv zurückgesetzt.'
 triggers:
 - {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'off', id: auto_off}
 - {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'on', id: auto_on}
