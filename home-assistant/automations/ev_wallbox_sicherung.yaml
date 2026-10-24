@@ -1,9 +1,10 @@
 id: ev_wallbox_sicherung
 alias: EV Wallbox Sicherung (openWB)
 description: Unabhängige Sicherung, läuft auch wenn 'EV Laden Steuerung (openWB)' ausgeschaltet ist. Die openWB wird
-  auf Stop gestellt, wenn nicht geladen werden soll. Steuerautomation aus: erlaubt nur bei ev_lademodus 'PV-Überschuss'. Steuerautomation an: Stop bei Lademodus 'Aus' oder 'Günstig' bei Preis ab ev_max_strompreis. Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
+  auf Stop gestellt, wenn nicht geladen werden soll. Steuerautomation aus: Modus 'PV-Überschuss' -> openWB-eigener Modus 'PV Charging', sonst Stop; beim Wiedereinschalten wird PV Charging beendet. Steuerautomation an: Stop bei Lademodus 'Aus' oder 'Günstig' bei Preis ab ev_max_strompreis. Bei ausgeschalteter Steuerautomation werden Fronius-Register und Merker zurückgesetzt.
 triggers:
 - {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'off', id: auto_off}
+- {trigger: state, entity_id: automation.ev_laden_steuerung_openwb, to: 'on', id: auto_on}
 - {trigger: state, entity_id: input_select.ev_lademodus, id: mode}
 - {trigger: state, entity_id: select.openwb_chargepoint_1_lademodus, id: openwb}
 - {trigger: time_pattern, minutes: /1, id: loop}
@@ -19,6 +20,19 @@ actions:
   if:
   - condition: template
     value_template: '{{ block and (not is_state(''select.openwb_chargepoint_1_lademodus'', ''Stop'') or states(''sensor.openwb_chargepoint_1_ladeleistung'') | float(0) > 500) }}'
+  then:
+  - {action: select.select_option, data: {option: Stop}, target: {entity_id: select.openwb_chargepoint_1_lademodus}}
+- alias: 'Steuerung aus + PV-Überschuss: openWB-eigener PV-Modus'
+  if:
+  - condition: template
+    value_template: '{{ auto_off and modus == ''PV-Überschuss'' and not is_state(''select.openwb_chargepoint_1_lademodus'', ''PV Charging'') }}'
+  then:
+  - {action: select.select_option, data: {option: PV Charging}, target: {entity_id: select.openwb_chargepoint_1_lademodus}}
+- alias: 'Steuerung wieder an: PV Charging beenden, Steuerung übernimmt'
+  if:
+  - {condition: trigger, id: auto_on}
+  - {condition: state, entity_id: select.openwb_chargepoint_1_lademodus, state: PV Charging}
+  - {condition: state, entity_id: input_boolean.ev_pv_laden_aktiv, state: 'off'}
   then:
   - {action: select.select_option, data: {option: Stop}, target: {entity_id: select.openwb_chargepoint_1_lademodus}}
 - alias: 'Steuerautomation aus: Register und Merker zurücksetzen'
